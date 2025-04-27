@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wallet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #181818;
+      color: #fff;
+      min-height: 100vh;
+    }
+    .wallet-header {
+      background: #ff6f00;
+      padding: 40px 0 30px 0;
+      border-bottom-left-radius: 30px;
+      border-bottom-right-radius: 30px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      position: relative;
+      text-align: center;
+      color: #222;
+    }
+    .wallet-header .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .wallet-header .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+    .wallet-header .wallet-label {
+      font-size: 1.1rem;
+      color: #222;
+      opacity: 0.8;
+      margin-bottom: 0.5rem;
+    }
+    .wallet-header .wallet-balance {
+      font-size: 2.7rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.2rem;
+      letter-spacing: 1px;
+    }
+    .wallet-header .wallet-currency {
+      font-size: 1.1rem;
+      color: #232323;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+      display: block;
+    }
+    .add-money-btn {
+      background: #181818;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 32px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 20px auto 0 auto;
+      display: block;
+      box-shadow: 0 4px 12px rgba(255,111,0,0.15);
+      transition: background 0.2s;
+    }
+    .add-money-btn:hover {
+      background: #e65b00;
+    }
+    .payment-section {
+      background: #232323;
+      border-radius: 20px;
+      padding: 28px 18px 18px 18px;
+      margin: 30px auto 0 auto;
+      max-width: 400px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    }
+    .payment-title {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+    .form-label {
+      color: #ffda08;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .form-control {
+      border-radius: 12px;
+      padding: 12px 15px;
+      border: 1px solid #444;
+      background: #181818;
+      color: #fff;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+    .form-control:focus {
+      border-color: #ff6f00;
+      box-shadow: 0 0 0 0.2rem rgba(255, 111, 0, 0.15);
+      background: #232323;
+      color: #fff;
+    }
+    .promo-code {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .promo-code .form-control {
+      padding-right: 44px;
+    }
+    .promo-code i {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(30%);
+      color: #ffda08;
+      font-size: 1.2rem;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .btn-primary {
+      background: #ff6f00;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover {
+      background: #e65b00;
+    }
+    .btn-secondary {
+      background: #232323;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 12px;
+      padding: 12px 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+      width: 100%;
+      margin-bottom: 0;
+      margin-top: 5px;
+    }
+    .btn-secondary:hover {
+      background: #181818;
+      color: #ffda08;
+    }
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(24, 24, 24, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .loader-circle {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #333;
+      border-top: 5px solid #ff6f00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .success-modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .success-modal-content {
+      background-color: #232323;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+      color: #fff;
+    }
+    .success-icon {
+      font-size: 60px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+    .success-title {
+      color: #ffda08;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .success-message {
+      color: #fff;
+      margin-bottom: 25px;
+    }
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .close-modal:hover {
+      color: #ffda08;
+    }
+    @media (max-width: 600px) {
+      .wallet-header {
+        padding: 30px 0 20px 0;
+      }
+      .wallet-header .wallet-balance {
+        font-size: 2rem;
+      }
+      .payment-section {
+        padding: 18px 6px 10px 6px;
+      }
+    }
+    .wallet-card-visa {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto 2rem auto;
+      background: linear-gradient(135deg, #ff9800 60%, #ff6f00 100%);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      padding: 2.2rem 2rem 1.5rem 2rem;
+      color: #fff;
+      position: relative;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .wallet-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .wallet-chip {
+      width: 44px;
+      height: 32px;
+      background: linear-gradient(135deg, #e0c068 60%, #fffbe6 100%);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    .wallet-card-type {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #fffbe6;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    }
+    .wallet-card-balance-label {
+      font-size: 1rem;
+      opacity: 0.85;
+      margin-top: 0.5rem;
+    }
+    .wallet-card-balance {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .wallet-card-bottom {
+      margin-top: 1.2rem;
+    }
+    .wallet-card-number {
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      color: #fffbe6;
+    }
+    .wallet-card-logos {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .wallet-logo {
+      height: 28px;
+      width: auto;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.10));
+    }
+    .wallet-logo.visa {
+      background: #fff;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+    .wallet-logo.mc {
+      background: #fff;
+      border-radius: 50%;
+      padding: 2px 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="loader"><div class="loader-circle"></div></div>
+  <div class="container" style="max-width:900px; margin: 0 auto;">
+    <a href="profile.html" style="display:inline-block; margin:32px 0 12px 0; color:#ff6f00; font-weight:600; text-decoration:none; font-size:1.1rem;">
+      <i class="fas fa-arrow-left me-2"></i>Back to Profile
+    </a>
+    <div class="wallet-card-visa mt-2 mb-4">
+      <div class="wallet-card-row">
+        <div class="wallet-chip"></div>
+        <div class="wallet-card-type">WALLET</div>
+      </div>
+      <div class="wallet-card-balance-label">Your Balance</div>
+      <div class="wallet-card-balance" id="walletAmount">0 EGP</div>
+      <div class="wallet-card-row wallet-card-bottom">
+        <div class="wallet-card-number">**** **** **** 1234</div>
+        <div class="wallet-card-logos">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" class="wallet-logo visa">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="wallet-logo mc">
+        </div>
+      </div>
+    </div>
+    <button class="add-money-btn" id="addMoneyBtn" style="background:#181818; color:#fff;"> <i class="fas fa-plus-circle me-2"></i> Add Money</button>
+  </div>
+  <div class="container">
+    <div class="payment-section" id="paymentSection">
+      <div class="payment-title">Add Money to Your Wallet</div>
+      <form id="paymentForm">
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount (EGP)</label>
+          <input type="number" class="form-control" id="amount" min="30" placeholder="Enter amount (minimum 30 EGP)" required>
+        </div>
+        <div class="mb-3 promo-code">
+          <label for="promoCode" class="form-label">Promo Code (Optional)</label>
+          <input type="text" class="form-control" id="promoCode" placeholder="Enter promo code">
+          <i class="fas fa-tag"></i>
+        </div>
+        <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+        <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+      </form>
+    </div>
+  </div>
+  <div class="success-modal" id="successModal">
+    <div class="success-modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+      <h2 class="success-title">Payment Successful!</h2>
+      <p class="success-message">Your wallet has been successfully recharged.</p>
+      <button class="btn btn-primary" id="doneBtn">Done</button>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+  <script>
+    // Function to decrypt data
+    function decryptData(encryptedData, secretKey) {
+      const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+      return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    }
+    function getDataWithExpiration(key, secretKey) {
+      const storedData = localStorage.getItem(key);
+      if (!storedData) return null;
+      const { encryptedData, expiration } = JSON.parse(storedData);
+      if (Date.now() > expiration) {
+        localStorage.removeItem(key);
+        return null;
+      }
+      return decryptData(encryptedData, secretKey);
+    }
+    const secretKey = "jnvmnjofmcivneirp";
+    let storedData = getDataWithExpiration("userData", secretKey);
+    let currentBalance = 0;
+    if (!storedData) {
+      window.location.href = "login.html";
+    }
+    async function fetchBalanceFromAPI() {
+      try {
+        document.querySelector('.loader').style.display = 'flex';
+        const response = await fetch('https://scooter-mocha.vercel.app/api/checkout/userbalance', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: storedData.data.user.email }),
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        currentBalance = data.wallet;
+        document.getElementById('walletAmount').innerHTML = currentBalance;
+        localStorage.setItem('balanceAmount', currentBalance);
+        return currentBalance;
+      } catch (error) {
+        console.error('Error fetching balance:', error);
+        const storedBalance = localStorage.getItem('balanceAmount');
+        if (storedBalance) {
+          currentBalance = parseInt(storedBalance);
+          document.getElementById('walletAmount').innerHTML = currentBalance;
+        }
+        return currentBalance;
+      } finally {
+        document.querySelector('.loader').style.display = 'none';
+      }
+    }
+    document.getElementById('addMoneyBtn').addEventListener('click', function() {
+      document.getElementById('paymentSection').style.display = 'block';
+    });
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+      document.getElementById('paymentSection').style.display = 'none';
+    });
+    document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const amount = parseInt(document.getElementById('amount').value);
+      const promoCode = document.getElementById('promoCode').value;
+      if (amount < 30) {
+        alert('Minimum amount is 30 EGP');
+        return;
+      }
+      document.querySelector('.loader').style.display = 'flex';
+      try {
+        const formdata = {
+          email: storedData.data.user.email,
+          url: 'https://scooter-mocha.vercel.app/api/checkout/paymnetcallback',
+          amount: amount
+        };
+        const response = await fetch("https://scooter-mocha.vercel.app/api/checkout/createorder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formdata),
+        });
+        if (response.ok) {
+          const jsonResponse = await response.json();
+          window.location.href = "https://accept.paymob.com/unifiedcheckout/?publicKey=egy_pk_test_tVPSDdi6pcdCkJcdGk1Qa4qoloHvM5s8&clientSecret=" + jsonResponse.client_secret;
+        } else {
+          const errorResponse = await response.json();
+          alert(errorResponse.error || "An error occurred");
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+        alert(error.message || "An error occurred");
+      } finally {
+        document.querySelector('.loader').style.display = 'none';
+      }
+    });
+    document.getElementById('closeModal').addEventListener('click', function() {
+      document.getElementById('successModal').style.display = 'none';
+    });
+    document.getElementById('doneBtn').addEventListener('click', function() {
+      document.getElementById('successModal').style.display = 'none';
+      document.getElementById('paymentSection').style.display = 'none';
+      fetchBalanceFromAPI();
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector('.loader').style.display = 'none';
+      fetchBalanceFromAPI();
+    });
+  </script>
+</body>
+</html>

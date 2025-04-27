@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Scooter</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <link rel="stylesheet" href="scoot.css"> -->
+    <style>
+      .logo {
+        border-radius: 10px;
+      }
+
+      /* Navbar Styling */
+      .navbar {
+        background-color: #333;
+      }
+      .navbar-brand img {
+        width: 70px;
+        height: 70px;
+      }
+      .navbar-nav .nav-link {
+        color: white;
+      }
+      .navbar-nav .nav-link.active {
+        background-color: #ff6f00;
+        border-radius: 5px;
+      }
+      .navbar-toggler {
+        border: none;
+      }
+      .navbar-toggler-icon {
+        color: white;
+      }
+
+      .scoot {
+        width: 120px;
+        height: 120px;
+      }
+
+      /* Button Styling */
+      .btn-orange {
+        background-color: #ff6f00;
+        color: white;
+        border: none;
+      }
+      .btn-orange:hover {
+        background-color: #e65b00;
+      }
+
+      /* Modal Styling */
+      .modal-content {
+        border-radius: 10px;
+      }
+
+      /* Admin Dashboard Styling */
+      .admin-dashboard {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+      .chart-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+      }
+      .stats-card {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .stats-card i {
+        font-size: 2em;
+        color: #ff6f00;
+        margin-bottom: 10px;
+      }
+      .stats-card h3 {
+        font-size: 1.5em;
+        margin: 10px 0;
+      }
+      .stats-card p {
+        font-size: 1.2em;
+        color: #666;
+      }
+      .user-table {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .user-table th {
+        background-color: #ff6f00;
+        color: white;
+      }
+      .user-table td, .user-table th {
+        padding: 12px;
+      }
+      .user-actions button {
+        margin: 0 5px;
+      }
+      .tab-content {
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .nav-tabs .nav-link {
+        color: #ff6f00;
+      }
+      .nav-tabs .nav-link.active {
+        background-color: #ff6f00;
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 600px) {
+        .header {
+          margin: 300px auto 30px auto;
+        }
+
+        .header-logo {
+          width: 50px;
+          height: 50px;
+          border-radius: 10px;
+          top: 10px;
+          left: 10px;
+        }
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 768px) {
+        .navbar-collapse {
+          text-align: center;
+        }
+
+        .navbar-header {
+          float: none;
+        }
+
+        .navbar-inverse .navbar-toggle {
+          top: 20px;
+          left: 20px;
+          height: 50px;
+          display: block;
+          float: none;
+        }
+      }
+
+      /* Loader styles */
+      .loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .loader-circle {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #ff6f00;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Add loader div at the top of body -->
+    <div class="loader">
+      <div class="loader-circle"></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="imgs/logosalem.jpg" class="logo" alt="Logo" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="profile.html">My Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="MyScooter.html">My Scooter</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="history.html">History</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="checkout.html">Wallet</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="terms and conditions.html"
+                >Terms and Conditions</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="refund.html">Refund</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Log Out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <!-- Admin Dashboard Section -->
+      <div class="admin-dashboard">
+        <h2 class="text-center mb-4">Admin Dashboard</h2>
+        
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="stats-card">
+              <i class="fas fa-users"></i>
+              <h3 id="totalUsers">0</h3>
+              <p>Total Users</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card">
+              <i class="fas fa-scooter"></i>
+              <h3 id="totalScooters">0</h3>
+              <p>Total Scooters</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card">
+              <i class="fas fa-chart-line"></i>
+              <h3 id="activeRides">0</h3>
+              <p>Active Rides</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="stats-card">
+              <i class="fas fa-money-bill-wave"></i>
+              <h3 id="totalRevenue">0 EGP</h3>
+              <p>Total Revenue</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="chart-container">
+              <h4>Weekly Usage</h4>
+              <canvas id="weeklyChart"></canvas>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="chart-container">
+              <h4>Monthly Usage</h4>
+              <canvas id="monthlyChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div class="chart-container">
+              <h4>90 Days Usage Trend</h4>
+              <canvas id="ninetyDaysChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs for Users and Scooters -->
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="users-tab" data-bs-toggle="tab" href="#users" role="tab">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="scooters-tab" data-bs-toggle="tab" href="#scooters" role="tab">Scooters</a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="adminTabContent">
+          <!-- Users Tab -->
+          <div class="tab-pane fade show active" id="users" role="tabpanel">
+            <div class="d-flex justify-content-between mb-3">
+              <h3>User Management</h3>
+              <button id="addUserBtn" class="btn btn-orange">Add User</button>
+            </div>
+            <div class="table-responsive">
+              <table class="table user-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Age</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="userTableBody">
+                  <!-- User rows will be added here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Scooters Tab -->
+          <div class="tab-pane fade" id="scooters" role="tabpanel">
+            <div class="d-flex justify-content-between mb-3">
+              <h3>Scooter Management</h3>
+              <button id="addScooterBtn" class="btn btn-orange">Add Scooter</button>
+            </div>
+            <div id="scooterList" class="row">
+              <!-- Scooter cards will be appended here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ 
+
+    <div
+      class="modal fade"
+      id="userModal"
+      tabindex="-1"
+      aria-labelledby="userModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="userModalLabel">Add User</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="userForm">
+              <div class="mb-3">
+                <label for="userNameInput" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="userNameInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userEmailInput" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="userEmailInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userPasswordInput" class="form-label"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  class="form-control"
+                  id="userPasswordInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userPhoneInput" class="form-label">Phone</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="userPhoneInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="userAgeInput" class="form-label">Age</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="userAgeInput"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-orange">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Scooter Modal -->
+    <div
+      class="modal fade"
+      id="scooterModal"
+      tabindex="-1"
+      aria-labelledby="scooterModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="scooterModalLabel">Add Scooter</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              onclick="closeModal()"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="scooterForm">
+              <div class="mb-3">
+                <label for="scooterIdInput" class="form-label"
+                  >Scooter ID</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="scooterIdInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="scooterNumberInput" class="form-label"
+                  >Scooter Number</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="scooterNumberInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="scooterPhotoInput" class="form-label"
+                  >Scooter Photo</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="scooterPhotoInput"
+                  accept="image/*"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="scooterLatInput" class="form-label">Latitude</label>
+                <input
+                  type="number"
+                  step="any"
+                  class="form-control"
+                  id="scooterLatInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="scooterLngInput" class="form-label"
+                  >Longitude</label
+                >
+                <input
+                  type="number"
+                  step="any"
+                  class="form-control"
+                  id="scooterLngInput"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Lock Status</label>
+                <div>
+                  <input
+                    type="radio"
+                    id="locked"
+                    name="lockStatus"
+                    value="locked"
+                    required
+                  />
+                  <label for="locked">Locked</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="unlocked"
+                    name="lockStatus"
+                    value="unlocked"
+                    required
+                  />
+                  <label for="unlocked">Unlocked</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-orange">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <script src="profile.js"></script> -->
+    <script>
+      let scooters = [];
+      let users = [];
+      let editIndex = null;
+      let selectedUserIndex = null;
+      let charts = {};
+
+      // API Configuration
+      const API_CONFIG = {
+        baseUrl: 'https://your-api-endpoint.com/api', // Replace with your actual API endpoint
+        endpoints: {
+          users: '/users',
+          scooters: '/scooters',
+          stats: '/stats',
+          usage: '/usage'
+        }
+      };
+
+      // API Service Functions
+      const apiService = {
+        async fetchData(endpoint) {
+          try {
+            // Show loader
+            document.querySelector('.loader').style.display = 'flex';
+            
+            // Replace this with your actual API call
+            // const response = await fetch(`${API_CONFIG.baseUrl}${endpoint}`);
+            // const data = await response.json();
+            
+            // For now, return mock data
+            return getMockData(endpoint);
+          } catch (error) {
+            console.error(`Error fetching data from ${endpoint}:`, error);
+            return null;
+          } finally {
+            // Hide loader after a short delay
+            setTimeout(() => {
+              document.querySelector('.loader').style.display = 'none';
+            }, 500);
+          }
+        },
+        
+        async fetchUsers() {
+          return await this.fetchData(API_CONFIG.endpoints.users);
+        },
+        
+        async fetchScooters() {
+          return await this.fetchData(API_CONFIG.endpoints.scooters);
+        },
+        
+        async fetchStats() {
+          return await this.fetchData(API_CONFIG.endpoints.stats);
+        },
+        
+        async fetchUsageData(period) {
+          return await this.fetchData(`${API_CONFIG.endpoints.usage}/${period}`);
+        }
+      };
+
+      // Mock data for development (remove when API is ready)
+      function getMockData(endpoint) {
+        if (endpoint === API_CONFIG.endpoints.users) {
+          return [
+            { id: 1, name: 'John Doe', email: 'john@example.com', phone: '1234567890', age: 30 },
+            { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '0987654321', age: 25 }
+          ];
+        } else if (endpoint === API_CONFIG.endpoints.scooters) {
+          return [
+            { id: 'S1', number: '001', lat: 29.428219223091464, lng: 32.40387109222776, lockStatus: 'locked' },
+            { id: 'S2', number: '002', lat: 29.42892940373553, lng: 32.40246561475691, lockStatus: 'unlocked' }
+          ];
+        } else if (endpoint === API_CONFIG.endpoints.stats) {
+          return {
+            totalUsers: 150,
+            totalScooters: 50,
+            activeRides: 25,
+            totalRevenue: 5000
+          };
+        } else if (endpoint.includes(API_CONFIG.endpoints.usage)) {
+          if (endpoint.includes('weekly')) {
+            return [65, 59, 80, 81, 56, 55, 40];
+          } else if (endpoint.includes('monthly')) {
+            return [120, 190, 300, 250];
+          } else if (endpoint.includes('ninety')) {
+            return Array.from({length: 90}, () => Math.floor(Math.random() * 100));
+          }
+        }
+        return [];
+      }
+
+      // Initialize Charts
+      async function initializeCharts() {
+        // Weekly Usage Chart
+        const weeklyData = await apiService.fetchUsageData('weekly');
+        const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+        charts.weekly = new Chart(weeklyCtx, {
+          type: 'line',
+          data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+              label: 'Users',
+              data: weeklyData,
+              borderColor: '#ff6f00',
+              tension: 0.1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              }
+            }
+          }
+        });
+
+        // Monthly Usage Chart
+        const monthlyData = await apiService.fetchUsageData('monthly');
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        charts.monthly = new Chart(monthlyCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            datasets: [{
+              label: 'Users',
+              data: monthlyData,
+              backgroundColor: '#ff6f00'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              }
+            }
+          }
+        });
+
+        // 90 Days Usage Chart
+        const ninetyDaysData = await apiService.fetchUsageData('ninety');
+        const ninetyDaysCtx = document.getElementById('ninetyDaysChart').getContext('2d');
+        charts.ninetyDays = new Chart(ninetyDaysCtx, {
+          type: 'line',
+          data: {
+            labels: Array.from({length: 90}, (_, i) => `Day ${i + 1}`),
+            datasets: [{
+              label: 'Users',
+              data: ninetyDaysData,
+              borderColor: '#ff6f00',
+              tension: 0.1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'top',
+              }
+            }
+          }
+        });
+      }
+
+      // Update Stats
+      async function updateStats() {
+        const stats = await apiService.fetchStats();
+        if (stats) {
+          document.getElementById('totalUsers').textContent = stats.totalUsers;
+          document.getElementById('totalScooters').textContent = stats.totalScooters;
+          document.getElementById('activeRides').textContent = stats.activeRides;
+          document.getElementById('totalRevenue').textContent = `${stats.totalRevenue} EGP`;
+        }
+      }
+
+      // User Management Functions
+      document.getElementById('addUserBtn').addEventListener('click', function() {
+        selectedUserIndex = null;
+        document.getElementById('userForm').reset();
+        document.getElementById('userModalLabel').innerText = 'Add User';
+        new bootstrap.Modal(document.getElementById('userModal')).show();
+      });
+
+      document.getElementById('userForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const userData = {
+          id: Date.now(),
+          name: document.getElementById('userNameInput').value,
+          email: document.getElementById('userEmailInput').value,
+          password: document.getElementById('userPasswordInput').value,
+          phone: document.getElementById('userPhoneInput').value,
+          age: document.getElementById('userAgeInput').value
+        };
+
+        // Show loader
+        document.querySelector('.loader').style.display = 'flex';
+
+        try {
+          // Replace with actual API call when ready
+          // await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.users}`, {
+          //   method: selectedUserIndex === null ? 'POST' : 'PUT',
+          //   headers: { 'Content-Type': 'application/json' },
+          //   body: JSON.stringify(userData)
+          // });
+
+          // For now, just update local data
+          if (selectedUserIndex === null) {
+            users.push(userData);
+          } else {
+            users[selectedUserIndex] = userData;
+          }
+
+          localStorage.setItem('users', JSON.stringify(users));
+          await renderUsers();
+          await updateStats();
+          new bootstrap.Modal(document.getElementById('userModal')).hide();
+        } catch (error) {
+          console.error('Error saving user:', error);
+          alert('Failed to save user. Please try again.');
+        } finally {
+          // Hide loader
+          document.querySelector('.loader').style.display = 'none';
+        }
+      });
+
+      async function renderUsers() {
+        const userTableBody = document.getElementById('userTableBody');
+        userTableBody.innerHTML = '';
+        
+        // Fetch users from API
+        const fetchedUsers = await apiService.fetchUsers();
+        if (fetchedUsers) {
+          users = fetchedUsers;
+        }
+        
+        users.forEach((user, index) => {
+          const row = `
+            <tr>
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td>${user.phone}</td>
+              <td>${user.age}</td>
+              <td class="user-actions">
+                <button class="btn btn-sm btn-warning" onclick="editUser(${index})">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="deleteUser(${index})">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+          userTableBody.insertAdjacentHTML('beforeend', row);
+        });
+      }
+
+      function editUser(index) {
+        selectedUserIndex = index;
+        const user = users[index];
+        document.getElementById('userNameInput').value = user.name;
+        document.getElementById('userEmailInput').value = user.email;
+        document.getElementById('userPasswordInput').value = user.password;
+        document.getElementById('userPhoneInput').value = user.phone;
+        document.getElementById('userAgeInput').value = user.age;
+        document.getElementById('userModalLabel').innerText = 'Edit User';
+        new bootstrap.Modal(document.getElementById('userModal')).show();
+      }
+
+      async function deleteUser(index) {
+        if (confirm('Are you sure you want to delete this user?')) {
+          // Show loader
+          document.querySelector('.loader').style.display = 'flex';
+          
+          try {
+            // Replace with actual API call when ready
+            // await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.users}/${users[index].id}`, {
+            //   method: 'DELETE'
+            // });
+            
+            // For now, just update local data
+            users.splice(index, 1);
+            localStorage.setItem('users', JSON.stringify(users));
+            await renderUsers();
+            await updateStats();
+          } catch (error) {
+            console.error('Error deleting user:', error);
+            alert('Failed to delete user. Please try again.');
+          } finally {
+            // Hide loader
+            document.querySelector('.loader').style.display = 'none';
+          }
+        }
+      }
+
+      // Scooter Management Functions
+      document.getElementById('addScooterBtn').addEventListener('click', function() {
+        editIndex = null;
+        document.getElementById('scooterForm').reset();
+        document.getElementById('scooterModalLabel').innerText = 'Add Scooter';
+        new bootstrap.Modal(document.getElementById('scooterModal')).show();
+      });
+
+      document.getElementById('scooterForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const scooterId = document.getElementById('scooterIdInput').value;
+        const scooterNumber = document.getElementById('scooterNumberInput').value;
+        const scooterPhotoFile = document.getElementById('scooterPhotoInput').files[0];
+        const scooterLat = document.getElementById('scooterLatInput').value;
+        const scooterLng = document.getElementById('scooterLngInput').value;
+        const lockStatus = document.querySelector('input[name="lockStatus"]:checked').value;
+
+        console.log('Form submitted with data:', {
+            id: scooterId,
+            number: scooterNumber,
+            lat: scooterLat,
+            lng: scooterLng,
+            lockStatus: lockStatus
+        });
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const scooterPhoto = e.target.result;
+            const scooterData = {
+                id: scooterId,
+                number: scooterNumber,
+                photo: scooterPhoto,
+                lat: parseFloat(scooterLat),
+                lng: parseFloat(scooterLng),
+                lockStatus: lockStatus
+            };
+
+            console.log('Scooter data before saving:', scooterData);
+            console.log('Current scooters array before saving:', scooters);
+
+            // Save to admin dashboard scooters array
+            if (editIndex === null) {
+                scooters.push(scooterData);
+            } else {
+                scooters[editIndex] = scooterData;
+            }
+
+            console.log('Scooters array after saving:', scooters);
+
+            // Save to localStorage for admin dashboard
+            localStorage.setItem('scooters', JSON.stringify(scooters));
+            
+            // Store the new scooter data for the map
+            localStorage.setItem('newScooter', JSON.stringify(scooterData));
+            
+            // Update the admin dashboard display
+            renderScooters();
+            updateStats();
+            
+            // Close the modal
+            new bootstrap.Modal(document.getElementById('scooterModal')).hide();
+            
+            // Redirect to profile page
+            window.location.href = 'profile.html';
+        };
+        reader.readAsDataURL(scooterPhotoFile);
+      });
+
+      async function renderScooters() {
+        const scooterList = document.getElementById('scooterList');
+        scooterList.innerHTML = '';
+        
+        // Check if we have scooters in localStorage first
+        const savedScooters = localStorage.getItem('scooters');
+        if (savedScooters) {
+            scooters = JSON.parse(savedScooters);
+        } else {
+            // Only fetch from API if we don't have local data
+            const fetchedScooters = await apiService.fetchScooters();
+            if (fetchedScooters) {
+                scooters = fetchedScooters;
+                // Save to localStorage for future use
+                localStorage.setItem('scooters', JSON.stringify(scooters));
+            }
+        }
+        
+        scooters.forEach((scooter, index) => {
+            const scooterCard = `
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <img src="${scooter.photo || 'imgs/default-scooter.jpg'}" class="scoot card-img-top" alt="Scooter Photo">
+                        <div class="card-body">
+                            <h5 class="card-title">Scooter ID: ${scooter.id}</h5>
+                            <p class="card-text">Scooter Number: ${scooter.number}</p>
+                            <p class="card-text">Latitude: ${scooter.lat}</p>
+                            <p class="card-text">Longitude: ${scooter.lng}</p>
+                            <p class="card-text">Lock Status: ${scooter.lockStatus}</p>
+                            <button class="btn btn-orange" onclick="editScooter(${index})">Update</button>
+                            <button class="btn btn-danger" onclick="deleteScooter(${index})">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            scooterList.insertAdjacentHTML('beforeend', scooterCard);
+        });
+    }
+
+    function editScooter(index) {
+        editIndex = index;
+        const scooter = scooters[index];
+        document.getElementById('scooterIdInput').value = scooter.id;
+        document.getElementById('scooterNumberInput').value = scooter.number;
+        document.getElementById('scooterLatInput').value = scooter.lat;
+        document.getElementById('scooterLngInput').value = scooter.lng;
+        document.querySelector(`input[name="lockStatus"][value="${scooter.lockStatus}"]`).checked = true;
+        document.getElementById('scooterModalLabel').innerText = 'Edit Scooter';
+        new bootstrap.Modal(document.getElementById('scooterModal')).show();
+    }
+
+    async function deleteScooter(index) {
+        if (confirm('Are you sure you want to delete this scooter?')) {
+            // Show loader
+            document.querySelector('.loader').style.display = 'flex';
+            
+            try {
+                // Replace with actual API call when ready
+                // await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.scooters}/${scooters[index].id}`, {
+                //   method: 'DELETE'
+                // });
+                
+                // For now, just update local data
+                scooters.splice(index, 1);
+                localStorage.setItem('scooters', JSON.stringify(scooters));
+                await renderScooters();
+                await updateStats();
+            } catch (error) {
+                console.error('Error deleting scooter:', error);
+                alert('Failed to delete scooter. Please try again.');
+            } finally {
+                // Hide loader
+                document.querySelector('.loader').style.display = 'none';
+            }
+        }
+    }
+
+    function closeModal() {
+        new bootstrap.Modal(document.getElementById('scooterModal')).hide();
+        document.getElementById('scooterForm').reset();
+    }
+
+    // Tab switching handler
+    document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Show loader
+            document.querySelector('.loader').style.display = 'flex';
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tabs .nav-link').forEach(t => {
+                t.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.remove('show', 'active');
+            });
+            
+            // Show the selected tab pane
+            const targetId = this.getAttribute('href');
+            document.querySelector(targetId).classList.add('show', 'active');
+            
+            // Load data for the selected tab
+            if (targetId === '#users') {
+                renderUsers();
+            } else if (targetId === '#scooters') {
+                renderScooters();
+            }
+            
+            // Hide loader after a short delay
+            setTimeout(() => {
+                document.querySelector('.loader').style.display = 'none';
+            }, 500);
+        });
+    });
+
+    // Initialize everything when the page loads
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Load data from localStorage as fallback
+        const savedUsers = localStorage.getItem('users');
+        const savedScooters = localStorage.getItem('scooters');
+        
+        if (savedUsers) {
+            users = JSON.parse(savedUsers);
+        }
+        if (savedScooters) {
+            scooters = JSON.parse(savedScooters);
+            console.log('Loaded scooters from localStorage:', scooters);
+        }
+
+        // Initialize the dashboard
+        await initializeCharts();
+        await renderUsers();
+        await renderScooters();
+        await updateStats();
+
+        // Add loader functionality
+        const loader = document.querySelector('.loader');
+        
+        // Hide loader when page is loaded
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 1000);
+        });
+
+        // Show loader when navigating between pages
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                loader.style.display = 'flex';
+            });
+        });
+    });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

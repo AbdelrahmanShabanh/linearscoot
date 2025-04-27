@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #uploadForm {
+            background-color: rgb(238, 234, 234);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 15px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="file"] {
+            margin: 15px 0;
+            padding: 10px;
+            font-size: 16px;
+            color: #e65c00;
+        }
+        button {
+            background-color: #ff6f00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #e65c00;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #f00e0e;
+    position: absolute;
+    display: flex;
+    bottom: 30px;
+        }
+        .logo{
+            
+
+    width: 70px;
+    height: 70px;
+    top: 20px;
+    left: 20px;
+    margin-bottom: 10px;
+transition: .9s .6s ease-in-out;
+border-radius: 15%;
+position: absolute;
+        }
+        #file-upload-button{
+            background-color: #ff6f00; 
+        }
+    </style>
+</head>
+<body>
+    <img src="imgs/logosalem.jpg" class="logo" alt="">
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="idPhoto">Upload your ID:</label>
+        <input type="file" id="idPhoto" name="idPhoto" accept="image/*">
+       <a href="profile.html"> <button type="submit" >Verify ID</button></a>
+    </form>
+    
+    <div id="result"></div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $('#uploadForm').on('submit', function(event) {
+            event.preventDefault();
+    
+            var formData = new FormData();
+            formData.append('idPhoto', $('#idPhoto')[0].files[0]);
+    
+            $.ajax({
+                url: 'YOUR_SERVER_ENDPOINT', // Your server-side endpoint
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('#result').html('ID Verification Success: ' + response.data.result);
+                },
+                error: function(xhr, status, error) {
+                    $('#result').html('ID Verification Failed: ' + xhr.responseText);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

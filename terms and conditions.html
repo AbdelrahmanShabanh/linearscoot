@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Terms and Conditions</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f9f9f9;
+      padding-bottom: 70px;
+    }
+    .logo{
+        top: 20px;
+        right: 20px;
+        position: absolute;
+        border-radius: 10px;
+    }
+
+    /* Navbar Styling */
+    .navbar-inverse {
+      border-radius: 0;
+      margin-bottom: 20px;
+    }
+    .navbar-inverse .navbar-nav > li > a {
+      color: white;
+    }
+    .navbar-inverse .navbar-nav > li.active > a {
+      background-color: #ff6f00;
+    }
+    p {
+    margin: 0 0 10px;
+    font-size: 16px;
+    }
+
+    /* Terms and Conditions Section */
+    .modals {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .modals h2 {
+      color: #ff6f00;
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .modals-content {
+      padding: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .modals-content ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .modals-content ul li {
+      margin-bottom: 10px;
+      padding-left: 20px;
+      position: relative;
+      font-size: 18px;
+    }
+
+    .modals-content ul li:before {
+      content: '✔';
+      color: #ff6f00;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 768px) {
+      .modals h2 {
+        font-size: 2rem;
+      }
+
+      .modals-content {
+        font-size: 1rem;
+      }
+
+      .navbar-collapse {
+        text-align: center;
+      }
+
+      .navbar-header {
+        float: none;
+      }
+
+      .navbar-inverse .navbar-toggle {
+        top: 20px;
+        left: 20px;
+        /* width: 50px; */
+        height: 50px;
+        display: block;
+        float: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- <a class="navbar-brand" href="#"><img src="imgs/logosalem.jpg" class="logo" alt="" width="70" height="70"></a> -->
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="login.html">Login</a></li>
+        
+        
+        <li class="active"><a href="terms and conditions.html">Terms and Conditions</a></li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Terms and Conditions Section -->
+<div id="TermsandConditions" class="modals">
+  <div class="modals-content">
+    <h2>Terms and Conditions</h2>
+    <p> You must agree to the following terms before proceeding:</p>
+    <ul>
+      <li>The person must be above <span style="color: red;">17</span>.</li>
+      <li>Only <span style="color: red;">one</span> person is allowed on the scooter.</li>
+      <li>Do not approach the <span style="color: rgb(255, 166, 0);">boundaries</span> selected on the map.</li>
+      <li>Do not approach the <span style="color: red;">red area</span>.</li>
+      <li>Park the scooter in the <span style="color: green;">parking area</span>.</li>
+      <li>Remember to <span style="color: rgb(255, 187, 0);">lock</span> the scooter.</li>
+      <li>Pricing: Minimum amount to deposit is <span style="color: red;">30EGP</span> & MAX <span style="color: green;">1000EGP</span> PER Ride</li>
+    </ul>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>&copy; 2024 Linear Scoot. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <title>Liner Scoot</title>
+    <link rel="stylesheet" href="scoot.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.min.js"></script>
+  </head>
+  <body>
+    <div id="map-container">
+      <div id="map"></div>
+      <div class="scope-icon" id="scopeButton">
+        <i
+          class="fa-duotone fa-solid fa-satellite fa-xl"
+          style="color: #ffffff"
+        ></i>
+      </div>
+      <div id="go-to-location">
+        <i
+          class="fa-solid fa-location-crosshairs fa-xl"
+          style="color: #ffffff"
+        ></i>
+      </div>
+
+      <!-- <div id="reader"></div> -->
+      <div id="result"></div>
+
+      <div class="scanerbtn" id="scanCont">
+        <div class="outer-circle" id="buttoncircle">
+          <button id="scanQRButton">
+            Scan
+            <img src="imgs/file (1).png" class="qrlogo" alt="" />
+          </button>
+        </div>
+        <div id="scannersContainer" style="display: none">
+          <div id="overlay">
+            <div id="topText">Scan the QR code to start the ride</div>
+            <video
+              id="preview"
+              width="100"
+              height="100"
+              style="border: 1px solid black; display: none"
+            ></video>
+
+            <button id="flashButton">Open Flash</button>
+            <button id="closeButton" style="font-size: 19px">✖</button>
+            <div id="manualCodey">
+              <input
+                type="text"
+                id="manualCode"
+                placeholder="or Enter Scooter Code"
+              />
+              <button id="submitCodeButton">Ride</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Manual Code Entry -->
+
+      <!-- <div id="manualCodeEntry" style="display: none;">
+            
+            <label id="scooterIdLabel" >Enter Scooter ID:</label>
+            <input type="text" id="manualCode" placeholder="Enter Scooter ID">
+            <button id="submitCodeButton">Ride Now</button>
+            <div class="or">Or</div>
+        </div> -->
+
+      <!-- Terms and Conditions Modal -->
+      <div id="termsModal" class="modal">
+        <div class="modal-content">
+          <!-- <img src="imgs/logo withoutbg.png" class="condlogo" alt=""> -->
+          <h2>Terms and Conditions</h2>
+          <p>You must agree to the following terms before proceeding:</p>
+          <ul>
+            <li>
+              The person must be above
+              <span style="color: red; font-weight: bold">17</span>.
+            </li>
+            <li>
+              Only <span style="color: red; font-weight: bold">one</span> person
+              is allowed on the scooter.
+            </li>
+            <li>
+              Do not approach the
+              <span style="color: rgb(255, 166, 0); font-weight: bold"
+                >boundaries</span
+              >
+              selected on the map.
+            </li>
+            <li>
+              Do not approach the
+              <span style="color: red; font-weight: bold">red area</span>.
+            </li>
+            <li>
+              Park the scooter in the
+              <span style="color: green">parking area</span>.
+            </li>
+            <li>
+              Remember to <span style="color: rgb(255, 187, 0)">lock</span> the
+              scooter.
+            </li>
+            <li>
+              Pricing: Minimum amount to deposit is
+              <span style="color: red">30EGP</span> & MAX
+              <span style="color: green">1000EGP</span> PER Ride
+            </li>
+          </ul>
+          <button id="agreeButton">Agree and Proceed</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+      <button id="menuButton">
+        <span id="hamburgerIcon">☰</span>
+        <span id="closeIcon" style="display: none; color: white">✖</span>
+      </button>
+      <div class="profile-header">
+        <img src="imgs/user.png" alt="Profile Picture" id="profilePic" />
+        <a href="user-profile.html" id="upload-button" class="upload-button" style="text-decoration:none; color:inherit;">+</a>
+        <span id="profileName">Abdelrahman shaban</span>
+        <div class="balance" onclick="copyLink()">Copy Link</div>
+      </div>
+      <ul>
+        <li><a href="profile.html">My Profile</a></li>
+        
+        <li><a href="MyScooter.html">My Scooter</a></li>
+        <li class="active"><a href="history.html">History</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Pricing</a>
+          <ul class="dropdown-menu">
+            <li style="list-style: decimal">
+              <a href="#price-plan1"> *2EGP/MIN+3EGP For Unlock</a>
+            </li>
+            <li style="list-style: decimal">
+              <a href="#price-plan2"
+                >*Minimum amount to deposit is
+                <span style="color: red">30EGP</span> & MAX
+                <span style="color: green">1000EGP</span> PER Ride</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li><a href="checkout.html">Wallet</a></li>
+        <!-- <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Help Center</a>
+          <ul class="dropdown-menu">
+            <li style="list-style: decimal">
+              <a href=" tel:+201226999886">
+                Call us: <span style="color: darkorange">+201226999886</span></a
+              >
+            </li>
+            <li style="list-style: decimal">
+              <a href="mailto:linerscoot@gmail.com"
+                >Email us:
+                <span style="color: darkorange">linerscoot@gmail.com</span></a
+              >
+            </li>
+          </ul>
+        </li> -->
+        <li><a href="instructions.html">Instructions</a></li>
+        <li><a href="terms and conditions.html">Terms and Conditions</a></li>
+        <li><a href="refund.html">Refund</a></li>
+
+        <li><a id="logoutButton" onclick="logout()">Log out</a></li>
+      </ul>
+    </div>
+    <div id="walletIcon" class="wallet-icon" onclick="showBalanceContainer()">
+      <i class="fa-solid fa-wallet fa-lg" style="color: #ffffff"></i>
+    </div>
+
+    <div id="balanceContainer" class="balance-container">
+      <div class="mybala">My balance</div>
+      <!-- <img src="imgs/logo withoutbg.png" class="balalogo" alt=""> -->
+      <span class="balance-text" id="currentBalance">0<sub>EGP</sub></span>
+
+      <div class="eye-icon" id="eyeIcon" onclick="hideBalanceContainer()">
+        <i class="fa-solid fa-eye-slash" style="color: #ffffff"></i>
+      </div>
+    </div>
+
+    <a href="checkout.html"><span class="pluss">+</span></a>
+    <!-- New Scooter Details Container -->
+    <div id="scooterDetails" class="scooter-details" style="display: none">
+      <div class="scooter-id">SCOOT ID: <span id="newScooterId"></span></div>
+
+      <div class="scooter-status" style="margin-top: 0">
+        <img
+          src="imgs/Good-Quality-Yellow-Black-Electric-Scooter-for-Sale.jpg"
+          alt="Scooter"
+          class="scooter-image"
+          id="newScooterPhoto"
+        />
+
+        <div class="battery-time-container">
+          <div class="battery-status">
+            <i
+              class="fa-solid fa-battery-full fa-lg"
+              style="color: #ffd43b"
+            ></i>
+            <span id="batteryPercentage">100%</span>
+          </div>
+          <div class="time-left">
+            <i
+              class="fa-solid fa-hourglass-end fa-lg"
+              style="color: #ffd43b"
+            ></i>
+            <span id="timeLeft">180 mins</span>
+          </div>
+        </div>
+      </div>
+      <span class="status">LOCKED</span>
+      <!-- <p>Min amount to start is <span style="color: red;">30 EGP</span></p> -->
+      <button
+        id="startRideButton"
+        class="btn btn-warning"
+        style="background-color: rgb(255 149 7)"
+      >
+        Start Ride
+      </button>
+      <button
+        id="cancelRideButton"
+        class="btn btn-danger"
+        style="background-color: #acacac"
+      >
+        Cancel Ride
+      </button>
+    </div>
+    <!-- Scooter Details Container -->
+    <div id="newScooterDetails" class="scooter-details" style="display: none">
+      <span
+        id="closeScooterDetails"
+        style="cursor: pointer; position: absolute; top: 10px; left: 10px"
+        >✖</span
+      >
+      <div class="scooter-id" id="scooterIdContainer">
+        SCOOT ID: <span id="newScooterId2"></span>
+      </div>
+      <div class="scooter-status" style="margin-top: 0">
+        <img
+          src="imgs/Good-Quality-Yellow-Black-Electric-Scooter-for-Sale.jpg"
+          alt="Scooter"
+          class="scooter-image"
+          id="scooter-image"
+        />
+
+        <div class="battery-time-container">
+          <div class="battery-status">
+            <i class="fa-solid fa-coins fa-lg" style="color: #ffd43b"></i>
+            <span id="batteryPercentage">3EGP</span>
+          </div>
+          <div class="time-left">
+            <i
+              class="fa-solid fa-hourglass-end fa-lg"
+              style="color: #ffd43b"
+            ></i>
+            <span id="timeLeft">180 mins</span>
+          </div>
+        </div>
+      </div>
+      <span class="status">UNLOCKED</span>
+      <!-- or UNLOCKED -->
+      <button
+        id="endRideButton"
+        class="btn btn-warning"
+        style="background-color: rgb(255 149 7)"
+      >
+        End Ride
+      </button>
+    </div>
+    <!-- details click -->
+    <div id="scooterClick" class="scooter-details" style="display: none">
+      <!-- <div class="scooter-id">SCOOT ID:</div>
+        <img src="imgs/Good-Quality-Yellow-Black-Electric-Scooter-for-Sale.jpg" alt="Scooter" class="scooter-image">
+        <div class="scooter-status">
+            <span class="status">LOCKED</span> 
+          
+            <div class="time"></div>
+            <div class="distance"></div>
+        </div> -->
+    </div>
+
+    <gmp-map-3d
+      center="29.43083310660134, 32.40179963721462"
+      tilt="67.5"
+    ></gmp-map-3d>
+    <script>
+      ((g) => {
+        var h,
+          a,
+          k,
+          p = "The Google Maps JavaScript API",
+          c = "google",
+          l = "importLibrary",
+          q = "__ib__",
+          m = document,
+          b = window;
+        b = b[c] || (b[c] = {});
+        var d = b.maps || (b.maps = {}),
+          r = new Set(),
+          e = new URLSearchParams(),
+          u = () =>
+            h ||
+            (h = new Promise(async (f, n) => {
+              await (a = m.createElement("script"));
+              e.set("libraries", [...r] + "");
+              for (k in g)
+                e.set(
+                  k.replace(/[A-Z]/g, (t) => "_" + t[0].toLowerCase()),
+                  g[k]
+                );
+              e.set("callback", c + ".maps." + q);
+              a.src = `https://maps.${c}apis.com/maps/api/js?` + e;
+              d[q] = f;
+              a.onerror = () => (h = n(Error(p + " could not load.")));
+              a.nonce = m.querySelector("script[nonce]")?.nonce || "";
+              m.head.append(a);
+            }));
+        d[l]
+          ? console.warn(p + " only loads once. Ignoring:", g)
+          : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
+      })({ key: "AIzaSyD26fVBtlyRntHRuVcbP_QBjg8rCCuAqj0", v: "weekly" });
+    </script>
+    <!-- <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw69XhDXcaJOkdSHhzpaNuaeIbJ8rr9lg&loading=async&libraries=maps,marker&v=beta" async defer>
+    </script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    ;
+
+    <script src="profile.js"></script>
+    <!-- <script>
+
+        
+    const response = await fetch('https://scooter-mocha.vercel.app/api/checkout/userbalance',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email:}),
+    }); // replace with your API URL
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data.balance; // assuming the API returns an object with a 'balance' field
+}
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentBalanceElement = document.getElementById('currentBalance');
+
+            // Load the balance from localStorage
+            const storedBalance = localStorage.getItem('balanceAmount');
+            // if (storedBalance) {
+            //     currentBalanceElement.innerHTML = `${storedBalance}<sub>EGP</sub>`;
+            // }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentBalanceElement = document.getElementById('ProfileBalance');
+
+            // Load the balance from localStorage
+            const storedBalance = localStorage.getItem('balanceAmount');
+            if (storedBalance) {
+                currentBalanceElement.innerHTML = `${storedBalance}<sub>EGP</sub>`;
+            }
+        });
+    </script> -->
+
+    <!-- Chat Button -->
+    <button class="chat-button" id="chatButton" title="Support">
+      <i class="fa-solid fa-comments fa-lg" style="color: #ffffff"></i>
+    </button>
+
+    <!-- Chat Container -->
+    <div class="chat-container" id="chatContainer">
+      <div class="chat-header">
+        <span>Technical Support:</span>
+        <div>
+          <a href="tel:+201226999886" style="color: white; text-decoration: none; font-size: 16px">
+            <span style="color: white">+201226999886</span></a>
+        </div>
+        <button onclick="closeChat()">✖</button>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <!-- Chat messages will go here -->
+      </div>
+      <div class="chat-footer">
+        <input type="text" id="chatInput" placeholder="How can we help you?" style="font-size: 16px" autocomplete="off" />
+        <input type="file" id="chatFile" style="display:none;" accept="image/*,.pdf,.doc,.docx,.txt" onchange="sendFile()" />
+        <button onclick="document.getElementById('chatFile').click()" title="Attach file"><i class="fa fa-paperclip"></i></button>
+        <button onclick="sendMessage()">Send</button>
+      </div>
+      <div class="chat-typing" id="chatTyping" style="display:none; color:#888; padding: 0 16px 10px 16px; font-size: 14px;">Support is typing...</div>
+    </div>
+
+    <script>
+      const chatButton = document.getElementById("chatButton");
+      const chatContainer = document.getElementById("chatContainer");
+      const chatBody = document.getElementById("chatBody");
+      const chatInput = document.getElementById("chatInput");
+      const chatTyping = document.getElementById("chatTyping");
+
+      // Load chat history from localStorage
+      function loadChatHistory() {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        chatBody.innerHTML = '';
+        history.forEach(msg => renderMessage(msg.text, msg.sender, msg.fileUrl));
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      // Save chat history to localStorage
+      function saveChatHistory(msg) {
+        const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+        history.push(msg);
+        localStorage.setItem('chatHistory', JSON.stringify(history));
+      }
+      function renderMessage(text, sender, fileUrl) {
+        const messageContainer = document.createElement("div");
+        messageContainer.classList.add("chat-message-container");
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("chat-message", sender);
+        if (fileUrl) {
+          if (fileUrl.match(/\.(jpeg|jpg|gif|png)$/)) {
+            messageElement.innerHTML = `<img src='${fileUrl}' style='max-width:120px; max-height:120px; border-radius:10px; display:block; margin-bottom:6px;'>`;
+          } else {
+            messageElement.innerHTML = `<a href='${fileUrl}' target='_blank' style='color:#ff6f00;'>${fileUrl.split('/').pop()}</a><br>`;
+          }
+        }
+        messageElement.innerHTML += text;
+        messageContainer.appendChild(messageElement);
+        chatBody.appendChild(messageContainer);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      chatButton.addEventListener("click", () => {
+        chatContainer.style.display = "flex";
+        loadChatHistory();
+        setTimeout(() => chatInput.focus(), 200);
+      });
+      function closeChat() {
+        chatContainer.style.display = "none";
+      }
+      function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message !== "") {
+          renderMessage(message, "user");
+          saveChatHistory({ text: message, sender: "user" });
+          chatInput.value = "";
+          chatBody.scrollTop = chatBody.scrollHeight;
+          // Simulate support typing
+          chatTyping.style.display = 'block';
+          setTimeout(() => {
+            chatTyping.style.display = 'none';
+            const reply = getSupportReply(message);
+            renderMessage(reply, "support");
+            saveChatHistory({ text: reply, sender: "support" });
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }, 1200);
+        }
+      }
+      function sendFile() {
+        const fileInput = document.getElementById('chatFile');
+        const file = fileInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          let fileUrl = e.target.result;
+          renderMessage(file.name, "user", fileUrl);
+          saveChatHistory({ text: file.name, sender: "user", fileUrl });
+          // Simulate support typing
+          chatTyping.style.display = 'block';
+          setTimeout(() => {
+            chatTyping.style.display = 'none';
+            const reply = 'Support received your file.';
+            renderMessage(reply, "support");
+            saveChatHistory({ text: reply, sender: "support" });
+            chatBody.scrollTop = chatBody.scrollHeight;
+          }, 1200);
+        };
+        reader.readAsDataURL(file);
+        fileInput.value = '';
+      }
+      function getSupportReply(message) {
+        // Simple bot logic, can be replaced with real backend
+        if (message.toLowerCase().includes('hello')) return 'Hello! How can I help you today?';
+        if (message.toLowerCase().includes('problem')) return 'Sorry to hear that. Can you describe your problem in detail?';
+        if (message.toLowerCase().includes('wallet')) return 'For wallet issues, please provide your email and a screenshot if possible.';
+        return 'Thank you for your message. Our support team will get back to you soon.';
+      }
+    </script>
+  </body>
+</html>

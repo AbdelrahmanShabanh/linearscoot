@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liner Scoot</title>
+    <link rel="stylesheet" href="scoot.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+
+    <div id="map-container">
+        
+        <div id="map">
+        
+        </div>
+        <div class="scope-icon" id="scopeButton">
+          
+            <i class="fa-solid fa-location-crosshairs fa-xl" style="color: #ffffff;"></i>
+        </div>
+        <div id="go-to-location">
+            <i class="fa-solid fa-location-arrow fa-xl" style="color: #ffffff;"></i>
+        </div>
+        <div id="reader" >
+            
+        </div>
+        <div id="result"></div>
+        <div class="scanerbtn" id="scanCont">
+<div class="outer-circle">
+        <button id="scanQRButton">Scan 
+            <img src="imgs/file (1).png"  class="qrlogo" alt="">
+        </button>
+</div>
+</div>
+        <!-- Manual Code Entry -->
+
+        <div id="manualCodeEntry" style="display: none;">
+            
+            <label id="scooterIdLabel" >Enter Scooter ID:</label>
+            <input type="text" id="manualCode" placeholder="Enter Scooter ID">
+            <button id="submitCodeButton">Ride Now</button>
+            <div class="or">Or</div>
+        </div>
+
+        <!-- Terms and Conditions Modal -->
+<div id="termsModal" class="modal">
+    <div class="modal-content">
+        <img src="imgs/logo withoutbg.png" class="condlogo" alt="">
+        <h2>Terms and Conditions</h2>
+        <p>You must agree to the following terms before proceeding:</p>
+        <ul>
+            <li>The person must be above <span style="color: red; font-weight: bold">17</span>.</li>
+            <li>Only <span style="color: red; font-weight: bold">one</span> person is allowed on the scooter.</li>
+            <li>Do not approach the <span style="color: rgb(255, 166, 0); font-weight: bold">boundaries</span> selected on the map.</li>
+            <li>Do not approach the <span style="color: red; font-weight: bold;">red area</span>.</li>
+            <li>Park the scooter in the <span style="color: green;">parking area</span>.</li>
+            <li>Remember to <span style="color: rgb(255, 187, 0);">lock</span> the scooter.</li>
+            <li>Pricing: Minimum amount to deposit is <span style="color: red;">30EGP</span> & MAX <span style="color: green;">1000EGP</span> PER Ride</li>
+        </ul>
+        <button id="agreeButton">Agree and Proceed</button>
+    </div>
+</div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <div class="profile-header">
+            <img src="imgs/WhatsApp Image 2023-02-14 at 18.53.00.jpg" alt="Profile Picture" id="profilePic">
+           <button id="upload-button" class="upload-button">+</button>
+            <span id="profileName">Abdelrahman shaban</span>
+            <div class="balance" id="ProfileBalance">60.00 EGP</div>
+        </div>
+        <ul>
+            <li ><a href="profile.html">My Profile</a></li>
+            <li ><a href="MyScooter.html">My Scooter</a></li>
+            <li class="active" ><a href="history.html">History</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle">Pricing</a>
+              <ul class="dropdown-menu">
+                <li style="list-style: decimal;"><a href="#price-plan1"> *2EGP/MIN+3EGP For Unlock</a></li>
+                <li style="list-style: decimal;"><a href="#price-plan2">*Minimum amount to deposit is <span style="color: red;">30EGP</span> & MAX <span style="color: green;">1000EGP</span> PER Ride</a></li>
+                
+              </ul>
+            </li>
+        <li><a href="checkout.html">Wallet</a></li>
+        <li><a href="instructions.html">Instructions</a></li>
+        <li ><a href="terms and conditions.html">Terms and Conditions</a></li>
+        <li ><a href="refund.html">Refund</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle">Help Center</a>
+          <ul class="dropdown-menu">
+            <li style="list-style: decimal;"><a  href=" tel:+201226999886"> Call us: <span style="color: darkorange;">+201226999886</span></a></li>
+            <li style="list-style: decimal;"><a href="mailto:linerscoot@gmail.com">Email us: <span style="color: darkorange;">linerscoot@gmail.com</span></a></li>
+           
+          </ul>
+        </li>
+        
+        <li><a id="logoutButton" onclick="logout()">Log Out</a></li>
+        </ul>
+    </div>
+
+    <button id="menuButton">☰</button>
+<div id="balanceContainer" class="balance-container">
+   <div class="mybala"> My balance</div>
+    <!-- <img src="imgs/logo withoutbg.png" class="balalogo" alt=""> -->
+    <span class="balance-text" id="currentBalance">60.00<sub>EGP</sub></span>
+    
+</div>
+<a href="checkout.html"><span class="pluss">+</span></a>
+   <!-- New Scooter Details Container -->
+   <div id="scooterDetails" class="scooter-details" style="display:none;">
+    <div class="scooter-id">SCOOT ID: <span id="newScooterId"></span></div>
+    <img src="imgs/Good-Quality-Yellow-Black-Electric-Scooter-for-Sale.jpg" alt="Scooter" class="scooter-image" id="newScooterPhoto" >
+    <div class="scooter-status">
+        <span class="status">LOCKED</span>
+        <p>Min amount to start is <span style="color: red;">30 EGP</span></p>
+        <button id="startRideButton" class="btn btn-warning" style="background-color: rgb(255 149 7);">Start Ride &rarr;</button>
+    </div>
+</div>
+    <!-- Scooter Details Container -->
+    <div id="newScooterDetails" class="scooter-details" style="display:none;">
+        <div class="scooter-id">SCOOT ID: <span id="newScooterId"></span></div>
+        <img src="imgs/Good-Quality-Yellow-Black-Electric-Scooter-for-Sale.jpg" alt="Scooter" class="scooter-image" id="scooter-image">
+        <div class="scooter-status">
+            <span class="status">UNLOCKED</span> <!-- or UNLOCKED -->
+            <div class="battery-status">
+                <div class="battery-bar" style="width: 80%;">80%</div>
+            </div>
+            <div class="scooter-balance">1 Min</div>
+        </div>
+    </div>
+    <!-- details click -->
+    <div id="scooterClick" class="scooter-details" style="display:none;">
+        <!-- <div class="scooter-id">SCOOT ID:</div>
+        <img src="imgs/Good-Quality-Yellow-Black-Electric-Scooter-for-Sale.jpg" alt="Scooter" class="scooter-image">
+        <div class="scooter-status">
+            <span class="status">LOCKED</span> 
+          
+            <div class="time"></div>
+            <div class="distance"></div>
+        </div> -->
+    </div>
+
+
+
+
+    <gmp-map-3d center="29.43083310660134, 32.40179963721462" tilt="67.5"></gmp-map-3d>
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyD26fVBtlyRntHRuVcbP_QBjg8rCCuAqj0", v: "weekly"});</script>
+    <!-- <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw69XhDXcaJOkdSHhzpaNuaeIbJ8rr9lg&loading=async&libraries=maps,marker&v=beta" async defer>
+    </script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>;
+
+    <script src="profile.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentBalanceElement = document.getElementById('currentBalance');
+
+            // Load the balance from localStorage
+            const storedBalance = localStorage.getItem('balanceAmount');
+            if (storedBalance) {
+                currentBalanceElement.innerHTML = `${storedBalance}<sub>EGP</sub>`;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentBalanceElement = document.getElementById('ProfileBalance');
+
+            // Load the balance from localStorage
+            const storedBalance = localStorage.getItem('balanceAmount');
+            if (storedBalance) {
+                currentBalanceElement.innerHTML = `${storedBalance}<sub>EGP</sub>`;
+            }
+        });
+    </script>
+</body>
+</html>

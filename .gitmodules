@@ -1,0 +1,3 @@
+[submodule "linearscoot"]
+    path = linearscoot
+    url = https://github.com/AbdelrahmanShabanh/linearscoot.git

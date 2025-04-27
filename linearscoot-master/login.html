@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liner Scoot</title>
+    
+    <link rel="stylesheet" href="scoot.css">
+    <link rel="icon" type="image/x-icon" href="imgs/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <div class="forms-container">
+            <div class="signin-signup">
+             
+                <form  class="sign-in-form" id="loginform" enctype="multipart/form-data" >
+                     <img src="imgs/logosalem.jpg" class="logo" alt="">
+                    <h2 class="tittle">Sign in</h2>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="email" placeholder="Email" id="name1" name="email" required>
+                        <span id="name-error1" class="error-message">Name must be at least 3 characters long.</span>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock" id="toggle-password1"></i>
+                        <input type="password" placeholder="Password" id="password1" name="password" required>
+                        <span id="password-error1" class="error-message">password must be at least 7 characters long.</span>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+
+                    <input type="submit" value="sign in" class="btn solid" >
+                    <!-- <p class="social-text">Or Sign in with social platforms</p> -->
+                    <!-- <div class="social-media">
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-google"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div> -->
+                </form>
+                <form  class="sign-up-form" enctype="multipart/form-data" id="createacc">
+                    <!-- <img src="imgs/logo withoutbg.png" class="logo" alt=""> -->
+                    <h2 class="tittle">Sign up</h2>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" placeholder="Fullname" id="name" required name="fullname">
+                        <span id="name-error" class="error-message">Name must be at least 3 characters long.</span>
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="number" placeholder="phone" id="phone"  required name="phoneNumber">
+                        <span id="phone-error" class="error-message">phone must be 11 digits.</span>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="text" placeholder="Email" id="email"  required name="email">
+                        <span id="email-error" class="error-message">Please enter a valid email address.</span>
+                    </div>
+                    
+                    <div class="input-field">
+                        <i class="fas fa-lock" id="toggle-password"></i>
+                        <input type="password" placeholder="Password" id="password"  required name="password">
+                        <span id="password-error" class="error-message">password must be at least 7 characters long.</span>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-venus-mars"></i>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="gender" value="male" required > Male
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="female" required> Female
+                            </label>
+                        </div>
+                        <span id="gender-error" class="error-message">Please select your gender.</span>
+                                   </div>
+                                   <div class="input-fields-container">
+                                    <div class="input-field" id="input-fields">
+                                        <i class="fas fa-birthday-cake"></i>
+                                        <input type="number" placeholder="Age" id="age" required name="age">
+                                        <span id="age-error" class="error-message">Please enter a valid age</span>
+                                    </div>
+                                    <div class="input-field" >
+                                        <i class="fas fa-file-upload"></i>
+                                        <label for="file" class="custom-file-upload">
+                                            Your ID
+                                        </label>
+                                        <input type="file" id="file" name="id" accept="image/*" required>
+                                        <span id="file-error" class="error-message">Please choose a file.</span>
+                                    </div>
+                                </div>
+                    <div class="policy">
+                        <input type="checkbox" required>
+                        <h3>I accept all  <a href="terms and conditions.html">terms & condition</a></h3>
+                      </div>
+                     
+                    <input type="submit" value="sign up" class="btn solid">
+                
+                    <!-- <p class="social-text">Or Sign up with social platforms</p>
+                    <div class="social-media">
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-google"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div> -->
+                </form>
+            </div>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>New here ?</h3>
+                    <p>Join us and be part of our linear scoot family!</p>
+                    <button class="btn transparent" id="sign-up-btn">Sign up</button>
+
+                </div>
+                <img src="imgs/undraw_scooter_re_lrsb.svg" class="image" alt="">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>One of us ?</h3>
+                    <p>Sign in and enjoy our unique experience! </p>
+                    <button class="btn transparent" id="sign-in-btn">Sign in</button>
+
+                </div>
+                <img src="imgs/undraw_map_re_60yf.svg" class="image" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="loader">
+        <video id="video" class="imgloader" autoplay muted  preload="auto">
+            <source src="imgs/WhatsApp Video 2024-09-09 at 21.17.00_6ffabc2e.mp4" type="video/mp4">
+        </video>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>;
+    <script src="app.js"></script>
+</body>
+</html>

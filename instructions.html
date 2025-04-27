@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>History</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- <script src="js/main.js"></script> -->
+  
+  <style>
+    .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .containerHistory {
+      margin-bottom: 25px;
+      border-radius: 0;
+    }
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 0;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      /*padding: 25px;*/
+    }
+   
+    .logo{
+        position: absolute;
+        left: 8px;
+    top: 5px;
+    border-radius: 5px; 
+    width: 40px;
+    height: 40px;
+    }
+    .panel-primary>.panel-heading {
+    color: #fff;
+    background-color: #ff6f00;
+    border-color: #ff6f00;
+}
+.panel-primary {
+    border-color: #ff6f00;
+}
+.scooter-image{
+    width: 70px;
+        height: 70px;
+        position: absolute;
+        right: 30px;
+        top: 50px;
+}
+
+body{
+    overflow: hidden;
+}
+
+
+.video-container {
+    border: 5px solid orange;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 290px auto;
+    max-width: 800px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    
+
+}
+
+.video-container video {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+  </style>
+</head>
+<body style="padding-bottom: 70px;">
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid col-sm-5">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <!-- <a class="navbar-brand" href="#"><img src="imgs/logosalem.jpg" class="logo" alt="" ></a> -->
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li ><a href="profile.html">My Profile</a></li>
+        <li ><a href="history.html">History</a></li>
+        
+    <li><a href="checkout.html">Wallet</a></li>
+    <li class="active"><a href="instructions.html">Instructions</a></li>
+    <li ><a href="terms and conditions.html">Terms and Conditions</a></li>
+    <!-- <li ><a href="refund.html">Refund</a></li> -->
+ 
+    
+    <!-- <li><a href="#">Log Out</a></li> -->
+      </ul>
+   
+<!--       <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+      </ul> -->
+    </div>
+  </div>
+ 
+</nav>
+
+<div class="video-container">
+  <video controls>
+    <source src="path/to/your/video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<footer class="container-fluid text-center">
+
+</footer>
+<script>
+    
+
+</script>
+</body>
+</html>

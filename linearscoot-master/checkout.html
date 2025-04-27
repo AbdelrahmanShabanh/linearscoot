@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Wallet </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .header {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 40px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+      margin: 150px auto 50px auto;
+      transition: all 0.5s ease;
+    }
+
+    .header-logo {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+    }
+
+    .wallet-info {
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    .wallet-info span {
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .add-money {
+      background-color: #ff6f00;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .add-money:hover {
+      background-color: #e65b00;
+    }
+
+    .container {
+      display: none;
+      margin-top: 30px;
+    }
+
+    .payment-methods {
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .payment-methods h3 {
+      color: #ff6f00;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .payment-methods input[type="radio"] {
+      margin-right: 10px;
+    }
+
+    .form-section {
+      padding: 5px 10px;
+      background-color: white;
+      margin-top: -20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    .form-section input, .form-section select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .form-section label {
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+    }
+
+    .pay-btn {
+      background-color: #ff6f00;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .pay-btn:hover {
+      background-color: #e65b00;
+    }
+
+    .previous-btn {
+      background-color: #ddd;
+      color: black;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .previous-btn:hover {
+      background-color: #bbb;
+    }
+
+    .hamburger-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #333;
+      color: #f7f4f3;
+      padding-top: 30px;
+      transition: all 0.3s;
+      transform: translateX(-100%);
+    }
+    ul{
+      list-style: none;
+      padding: 0;
+      line-height: 1.6;
+      margin-top: 15px;
+      margin-left: 4px;
+    }
+
+    .menu-item {
+      padding: 23px 0;
+   
+    color: #333;
+    cursor: pointer;
+    }
+    .menu-item a {
+     color:white;
+    cursor: pointer;
+    }
+
+    .menu-item.active {
+      background-color: #ff6f00;
+    }
+
+    .menu-item:hover {
+      background-color: #444;
+      cursor: pointer;
+    }
+
+    .menu-btn {
+      background: none;
+      color: #ff6f00;
+      font-size: 30px;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+ 
+  /* Modal Styles */
+  .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 70% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+      text-align: center;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .close {
+      color: #ff6f00;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      opacity: 1;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #ff6f00;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .checkmark {
+      font-size: 50px;
+      color: green;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      .header {
+        margin: 300px auto 30px auto;
+      }
+
+      .header-logo {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        top: 10px;
+        left: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hamburger-menu" id="hamburgerMenu">
+  <ul >
+    <li class="menu-item"><a href="profile.html">My Profile</a></li>
+    <li class="menu-item"><a href="history.html">History</a></li>
+    
+<li class="menu-item active" ><a href="checkout.html">Wallet</a></li>
+
+<li class="menu-item" ><a href="terms and conditions.html">Terms and Conditions</a></li>
+<li class="menu-item"><a href="refund.html">Refund</a></li>
+
+
+<li class="menu-item"><a href="#">Log Out</a></li>
+  </ul>
+</div>
+
+<div class="header" id="walletHeader">
+  <img src="imgs/logosalem.jpg" alt="Logo" class="header-logo">
+  <div class="wallet-info">
+    You have in your wallet <span id="walletAmount">100 EGP</span>
+  </div>
+  <button class="add-money" id="addMoneyBtn">+ Add Money</button>
+</div>
+
+<div class="container" id="paymentMethodsContainer">
+  <div class="payment-methods" id="paymentMethodsSection">
+    <h3>How would you like to pay?</h3>
+    <form id="paymentForm">
+      <div class="form-check">
+        <input type="radio" id="creditCard" name="paymentMethod" value="Credit or Debit Card" onclick="customizeForm('creditCard')">
+        <label for="creditCard">Credit or Debit Card</label>
+        
+      </div>
+      <div class="form-check">
+        <input type="radio" id="wallet" name="paymentMethod" value="Wallet" onclick="customizeForm('wallet')">
+        <label for="wallet">Wallet (e.g., Vodafone Cash)</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" id="paypal" name="paymentMethod" value="PayPal" onclick="customizeForm('paypal')">
+        <label for="paypal">PayPal</label>
+      </div>
+    </form>
+  </div>
+
+  <div class="form-section" id="formSection">
+    <h3>Enter Payment Details</h3>
+    <form id="detailsForm">
+      <div id="dynamicFields"></div>
+      <button type="button" class="previous-btn" onclick="goBackToPaymentMethods()">Back</button>
+      <button type="submit" class="pay-btn" id="payBtn">Pay</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="paymentModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="checkmark">✔</div>
+    <h2 style="color: #e65b00;">Payment Successful!</h2>
+  </div>
+</div>
+
+<button class="menu-btn" id="hamburgerIcon" onclick="toggleMenu()">☰</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script>
+// Function to decrypt data
+function decryptData(encryptedData, secretKey) {
+  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+}
+
+// Function to set data in localStorage with expiration
+function getDataWithExpiration(key, secretKey) {
+  const storedData = localStorage.getItem(key);
+  if (!storedData) return null; // No data found
+
+  const { encryptedData, expiration } = JSON.parse(storedData);
+  if (Date.now() > expiration) {
+    localStorage.removeItem(key); // Remove expired data
+    return null; // Data is expired
+  }
+  return decryptData(encryptedData, secretKey); // Decrypt and return valid data
+}
+const secretKey = "jnvmnjofmcivneirp"; // Use the same secret key for decryption
+const storedData = getDataWithExpiration("userData", secretKey);
+
+if (storedData) {
+  console.log("Valid User Data:", storedData);
+  
+  document.getElementById(
+    "walletAmount"
+  ).innerText = `${storedData.data.user.wallet} EGP`;
+} else {
+  window.location.href = "/login.html";
+}
+
+  let menuOpen = false;
+
+  // Show payment options and move the header up
+  document.getElementById('addMoneyBtn').addEventListener('click', function () {
+    document.getElementById('walletHeader').style.marginTop = '70px';
+    document.getElementById('paymentMethodsContainer').style.display = 'block';
+  });
+
+  // Toggle hamburger menu and change to X icon
+  function toggleMenu() {
+    const menu = document.getElementById('hamburgerMenu');
+    const hamburgerIcon = document.getElementById('hamburgerIcon');
+
+    if (menuOpen) {
+      menu.style.transform = 'translateX(-100%)';
+      hamburgerIcon.innerHTML = '☰';
+      menuOpen = false;
+    } else {
+      menu.style.transform = 'translateX(0)';
+      hamburgerIcon.innerHTML = '✕';
+      menuOpen = true;
+    }
+  }
+
+  // Customize form fields based on payment method and hide payment methods div
+  function customizeForm(paymentMethod) {
+    const dynamicFields = document.getElementById('dynamicFields');
+    const paymentMethodsSection = document.getElementById('paymentMethodsSection');
+    dynamicFields.innerHTML = '';
+    let fields = '';
+    let payBtnText = 'Pay with ';
+
+    // Hide payment methods section once a payment method is chosen
+    paymentMethodsSection.style.display = 'none';
+
+    switch (paymentMethod) {
+      case 'creditCard':
+        fields += `
+          <label for="cardNumber">Card Number:</label>
+          <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter your card number">
+          <span class="error-message" id="errorCardNumber"></span>
+          <label for="expiryDate">Expiry Date:</label>
+          <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY">
+          <span class="error-message" id="errorExpiryDate"></span>
+          <label for="cvv">CVV:</label>
+          <input type="text" id="cvv" name="cvv" placeholder="Enter your CVV">
+          <span class="error-message" id="errorCvv"></span>
+           <label for="amountCreditCard">Amount:</label>
+          <input type="number" id="amountCreditCard" name="amountCreditCard" placeholder="Enter amount">
+        `;
+        payBtnText += 'Card';
+        break;
+
+      case 'wallet':
+        fields += `
+          <label for="phoneNumber">Phone Number:</label>
+          <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number">
+          <span class="error-message" id="errorPhoneNumber"></span>
+          <label for="pinCode">PIN Code:</label>
+          <input type="text" id="pinCode" name="pinCode" placeholder="Enter your PIN code">
+          <span class="error-message" id="errorPinCode"></span>
+            <label for="amountWallet">Amount:</label>
+          <input type="number" id="amountWallet" name="amountWallet" placeholder="Enter amount">
+        `;
+        payBtnText += 'Wallet';
+        break;
+
+      case 'paypal':
+        fields += `
+          <label for="email">PayPal Email:</label>
+          <input type="email" id="email" name="email" placeholder="Enter your PayPal email">
+          <span class="error-message" id="errorEmail"></span>
+             <label for="amountPayPal">Amount:</label>
+          <input type="number" id="amountPayPal" name="amountPayPal" placeholder="Enter amount">
+        `;
+        payBtnText += 'PayPal';
+        break;
+    }
+
+    dynamicFields.innerHTML = fields;
+    document.getElementById('formSection').style.display = 'block';
+    document.getElementById('payBtn').innerText = payBtnText;
+  }
+
+  // Go back to the payment methods div
+  function goBackToPaymentMethods() {
+    document.getElementById('formSection').style.display = 'none';
+    document.getElementById('paymentMethodsSection').style.display = 'block';
+  }
+
+  // Error handling on form submission
+  document.getElementById('detailsForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    let valid = true;
+
+    if (document.getElementById('cardNumber') && !document.getElementById('cardNumber').value) {
+      valid = false;
+      document.getElementById('errorCardNumber').innerText = 'Card number is required';
+    }
+
+    if (valid) {
+      document.getElementById('paymentModal').style.display = 'block';
+      let amount;
+      switch (document.querySelector('input[name="paymentMethod"]:checked').value) {
+        case 'Credit or Debit Card':
+          amount = parseFloat(document.getElementById('amountCreditCard').value);
+          break;
+        case 'Wallet':
+          amount = parseFloat(document.getElementById('amountWallet').value);
+          break;
+        case 'PayPal':
+          amount = parseFloat(document.getElementById('amountPayPal').value);
+          break;
+      }
+      const currentBalance = parseFloat(localStorage.getItem('balanceAmount') || '0');
+      const newBalance = currentBalance + amount;
+      localStorage.setItem('balanceAmount', newBalance.toFixed(2));
+      document.getElementById('walletAmount').innerText = `${newBalance.toFixed(2)} EGP`;
+
+      document.getElementById('detailsForm').reset();
+    }
+  });
+
+   // Close the modal
+   function closeModal() {
+    document.getElementById('paymentModal').style.display = 'none';
+    document.getElementById('detailsForm').reset();
+  }
+
+   // Load the balance from localStorage
+   document.addEventListener('DOMContentLoaded', function() {
+    const walletAmountElement = document.getElementById('walletAmount');
+    const storedBalance = localStorage.getItem('balanceAmount');
+    if (storedBalance) {
+      walletAmountElement.innerText = `${storedBalance} EGP`;
+    }
+  });
+</script>
+
+</body>
+</html>

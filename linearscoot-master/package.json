@@ -1,0 +1,14 @@
+{
+  "name": "liner-scoot",
+  "version": "1.0.0",
+  "description": "expressid",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "abdelrahman",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

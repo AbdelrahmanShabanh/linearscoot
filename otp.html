@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        background-color: #ffffff;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .otp-container {
+        max-width: 400px;
+        width: 90%;
+        padding: 2rem;
+        text-align: center;
+      }
+      .otp-title {
+        color: #333;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+      .otp-message {
+        color: #666;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+      }
+      .otp-input-container {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+      }
+      .otp-input {
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 1.2rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        margin: 0 4px;
+      }
+      .otp-input:focus {
+        border-color: #ff6f00;
+        outline: none;
+      }
+      .submit-btn {
+        background-color: #ff6f00;
+        color: white;
+        border: none;
+        padding: 12px 40px;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 1rem;
+        transition: background-color 0.3s ease;
+      }
+      .submit-btn:hover {
+        background-color: #f36600;
+      }
+      .resend-text {
+        color: #666;
+        font-size: 0.9rem;
+      }
+      .resend-link {
+        color: #ff6f00;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .message-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .message-box {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 90%;
+        width: 400px;
+      }
+      .message-title {
+        color: #333;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+      }
+      .message-text {
+        color: #666;
+        margin-bottom: 1.5rem;
+      }
+      .message-btn {
+        background-color: #ff6f00;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 25px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      .message-btn:hover {
+        background-color: #f36600;
+      }
+      .error-message {
+        color: #dc3545;
+        margin-top: 1rem;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="otp-container">
+      <h2 class="otp-title">OTP Verification</h2>
+      <p class="otp-message">Hello! Please enter the verification code sent to your mobile number.</p>
+      <form id="otpForm">
+        <div class="otp-input-container">
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+          <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" required>
+        </div>
+        <p class="error-message" id="errorMessage">Invalid OTP. Please try again.</p>
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+      <p class="resend-text">OTP not received? <span class="resend-link">RESEND</span></p>
+    </div>
+
+    <!-- Success Message Overlay -->
+    <div class="message-overlay" id="messageOverlay">
+      <div class="message-box">
+        <h3 class="message-title">Registration Successful!</h3>
+        <p class="message-text">Your account has been created successfully. Please sign in with your email and password.</p>
+        <button class="message-btn" onclick="redirectToLogin()">Sign In</button>
+      </div>
+    </div>
+
+    <script>
+        // Auto-focus next input
+        const inputs = document.querySelectorAll('.otp-input');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        // Check if we have pending signup data
+        const pendingSignupData = JSON.parse(localStorage.getItem('pendingSignupData') || '{}');
+        if (!pendingSignupData.email) {
+            // If no pending signup, redirect back to signup page
+            window.location.href = 'login.html';
+        }
+
+        // Update the welcome message with the user's email
+        const messageElement = document.querySelector('.otp-message');
+        messageElement.textContent = `Hello ${pendingSignupData.fullname || ''}! Please enter the verification code sent to your mobile number ${pendingSignupData.phoneNumber || ''}.`;
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                // Only allow numbers
+                if (!/^\d*$/.test(value)) {
+                    e.target.value = '';
+                    return;
+                }
+                if (value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                // If all inputs are filled, submit automatically
+                if (index === inputs.length - 1 && value) {
+                    document.querySelector('.submit-btn').click();
+                }
+                // Hide error message when user starts typing
+                errorMessage.style.display = 'none';
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            // Allow paste of 4 digit code
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 4);
+                if (pastedData.length === 4) {
+                    inputs.forEach((input, i) => {
+                        input.value = pastedData[i] || '';
+                    });
+                    document.querySelector('.submit-btn').click();
+                }
+            });
+        });
+
+        function showSuccessMessage() {
+            document.getElementById('messageOverlay').style.display = 'flex';
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        // Handle form submission
+        document.getElementById('otpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const otp = Array.from(inputs).map(input => input.value).join('');
+            
+            try {
+                // Here you would typically validate the OTP with your backend
+                // For example:
+                // const response = await fetch('/api/verify-otp', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({
+                //         otp,
+                //         ...pendingSignupData
+                //     })
+                // });
+                
+                // For now, we'll simulate a successful verification
+                // Clear the pending signup data
+                localStorage.removeItem('pendingSignupData');
+                
+                // Show success message overlay
+                showSuccessMessage();
+            } catch (error) {
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        // Handle resend
+        let resendTimeout = 60;
+        const resendLink = document.querySelector('.resend-link');
+        
+        function updateResendButton() {
+            if (resendTimeout > 0) {
+                resendLink.textContent = `Resend OTP in ${resendTimeout}s`;
+                resendLink.style.pointerEvents = 'none';
+                resendTimeout--;
+                setTimeout(updateResendButton, 1000);
+            } else {
+                resendLink.textContent = 'RESEND';
+                resendLink.style.pointerEvents = 'auto';
+            }
+        }
+        
+        resendLink.addEventListener('click', async () => {
+            try {
+                // Here you would typically trigger OTP resend with your backend
+                // For example:
+                // await fetch('/api/resend-otp', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({
+                //         phoneNumber: pendingSignupData.phoneNumber
+                //     })
+                // });
+                
+                // Reset and start the countdown
+                resendTimeout = 60;
+                updateResendButton();
+                
+                // Show resend confirmation
+                const tempMessage = document.createElement('p');
+                tempMessage.textContent = 'A new OTP has been sent to your mobile number';
+                tempMessage.style.color = '#4CAF50';
+                tempMessage.style.marginTop = '1rem';
+                document.querySelector('.resend-text').after(tempMessage);
+                setTimeout(() => tempMessage.remove(), 3000);
+            } catch (error) {
+                errorMessage.textContent = 'Failed to resend OTP. Please try again.';
+                errorMessage.style.display = 'block';
+            }
+        });
+
+        // Start the initial countdown
+        updateResendButton();
+    </script>
+  </body>
+</html>

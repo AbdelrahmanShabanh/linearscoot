@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Scooter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="scoot.css"> -->
+    <style>
+        .logo {
+            border-radius: 10px;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: #333;
+        }
+        .navbar-brand img {
+            width: 70px;
+            height: 70px;
+        }
+        .navbar-nav .nav-link {
+            color: white;
+        }
+        .navbar-nav .nav-link.active {
+            background-color: #ff6f00;
+            border-radius: 5px;
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .navbar-toggler-icon {
+            color: white;
+        }
+
+        .scoot {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* Button Styling */
+        .btn-orange {
+            background-color: #ff6f00;
+            color: white;
+            border: none;
+        }
+        .btn-orange:hover {
+            background-color: #e65b00;
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .header {
+                margin: 300px auto 30px auto;
+            }
+
+            .header-logo {
+                width: 50px;
+                height: 50px;
+                border-radius: 10px;
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                text-align: center;
+            }
+
+            .navbar-header {
+                float: none;
+            }
+
+            .navbar-inverse .navbar-toggle {
+                top: 20px;
+                left: 20px;
+                height: 50px;
+                display: block;
+                float: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="imgs/logosalem.jpg" class="logo" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">My Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="MyScooter.html">My Scooter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="history.html">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="checkout.html">Wallet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="terms and conditions.html">Terms and Conditions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="refund.html">Refund</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h2 class="text-center">My Scooters</h2>
+        <button id="addScooterBtn" class="btn btn-orange mb-3">Add Scooter</button>
+        <div id="scooterList" class="row">
+            <!-- Scooter cards will be appended here -->
+        </div>
+    </div>
+
+    <!-- Add/Edit Scooter Modal -->
+    <div class="modal fade" id="scooterModal" tabindex="-1" aria-labelledby="scooterModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="scooterModalLabel">Add Scooter</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="scooterForm">
+                        <div class="mb-3">
+                            <label for="scooterIdInput" class="form-label">Scooter ID</label>
+                            <input type="text" class="form-control" id="scooterIdInput" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scooterNumberInput" class="form-label">Scooter Number</label>
+                            <input type="number" class="form-control" id="scooterNumberInput" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scooterPhotoInput" class="form-label">Scooter Photo</label>
+                            <input type="file" class="form-control" id="scooterPhotoInput" accept="image/*" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scooterLatInput" class="form-label">Latitude</label>
+                            <input type="number" step="any" class="form-control" id="scooterLatInput" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scooterLngInput" class="form-label">Longitude</label>
+                            <input type="number" step="any" class="form-control" id="scooterLngInput" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Lock Status</label>
+                            <div>
+                                <input type="radio" id="locked" name="lockStatus" value="locked" required>
+                                <label for="locked">Locked</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="unlocked" name="lockStatus" value="unlocked" required>
+                                <label for="unlocked">Unlocked</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-orange">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- <script src="profile.js"></script> -->
+    <script>
+        let scooters = [];
+        let editIndex = null;
+
+        document.getElementById('addScooterBtn').addEventListener('click', function () {
+            editIndex = null;
+            document.getElementById('scooterForm').reset();
+            document.getElementById('scooterModalLabel').innerText = 'Add Scooter';
+            new bootstrap.Modal(document.getElementById('scooterModal')).show();
+        });
+
+        document.getElementById('scooterForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const scooterId = document.getElementById('scooterIdInput').value;
+            const scooterNumber = document.getElementById('scooterNumberInput').value;
+            const scooterPhotoFile = document.getElementById('scooterPhotoInput').files[0];
+            const scooterLat = document.getElementById('scooterLatInput').value;
+            const scooterLng = document.getElementById('scooterLngInput').value;
+            const lockStatus = document.querySelector('input[name="lockStatus"]:checked').value;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const scooterPhoto = e.target.result;
+                const scooterData = { id: scooterId, number: scooterNumber, photo: scooterPhoto, lat: scooterLat, lng: scooterLng, lockStatus: lockStatus };
+
+                if (editIndex === null) {
+                    scooters.push(scooterData);
+                } else {
+                    scooters[editIndex] = scooterData;
+                }
+
+                renderScooters();
+                new bootstrap.Modal(document.getElementById('scooterModal')).hide();
+
+                // Save to profile.js and redirect to profile.html
+                // saveScooterData(scooterData);
+                localStorage.setItem('newScooter', JSON.stringify(scooterData));
+                window.location.href = 'profile.html';
+            };
+            reader.readAsDataURL(scooterPhotoFile);
+        });
+
+        function renderScooters() {
+            const scooterList = document.getElementById('scooterList');
+            scooterList.innerHTML = '';
+            scooters.forEach((scooter, index) => {
+                const scooterCard = `
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <img src="${scooter.photo}" class="scoot card-img-top" alt="Scooter Photo">
+                            <div class="card-body">
+                                <h5 class="card-title">Scooter ID: ${scooter.id}</h5>
+                                <p class="card-text">Scooter Number: ${scooter.number}</p>
+                                <p class="card-text">Latitude: ${scooter.lat}</p>
+                                <p class="card-text">Longitude: ${scooter.lng}</p>
+                                <p class="card-text">Lock Status: ${scooter.lockStatus}</p>
+                                <button class="btn btn-orange" onclick="editScooter(${index})">Update</button>
+                                <button class="btn btn-danger" onclick="deleteScooter(${index})">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                scooterList.insertAdjacentHTML('beforeend', scooterCard);
+            });
+        }
+
+        function editScooter(index) {
+            editIndex = index;
+            const scooter = scooters[index];
+            document.getElementById('scooterIdInput').value = scooter.id;
+            document.getElementById('scooterNumberInput').value = scooter.number;
+            document.getElementById('scooterLatInput').value = scooter.lat;
+            document.getElementById('scooterLngInput').value = scooter.lng;
+            document.querySelector(`input[name="lockStatus"][value="${scooter.lockStatus}"]`).checked = true;
+            document.getElementById('scooterModalLabel').innerText = 'Edit Scooter';
+            new bootstrap.Modal(document.getElementById('scooterModal')).show();
+        }
+
+        function deleteScooter(index) {
+            scooters.splice(index, 1);
+            renderScooters();
+        }
+
+        function closeModal() {
+            new bootstrap.Modal(document.getElementById('scooterModal')).hide();
+            document.getElementById('scooterForm').reset();
+        }
+
+//         function saveScooterData(scooterData) {
+//   // Assuming profile.js is included in the same project and accessible
+//   if (typeof scooterPositions !== 'undefined') {
+//     addScooterPosition(scooterData);
+//     displayScooterDetailsWithDistance(scooterData);
+//   }
+// }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
