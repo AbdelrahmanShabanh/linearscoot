@@ -123,8 +123,12 @@
         <span id="closeIcon" style="display: none; color: white">✖</span>
       </button>
       <div class="profile-header">
-        <img src="imgs/user.png" alt="Profile Picture" id="profilePic" />
-        <a href="user-profile.html" id="upload-button" class="upload-button" style="text-decoration:none; color:inherit;">+</a>
+        <div style="position: relative; display: inline-block;">
+          <img src="imgs/WhatsApp Image 2023-02-14 at 18.53.00.jpg" alt="Profile Picture" id="profilePic">
+          <a href="user-profile.html" id="editProfileIcon" style="position: absolute; bottom: -5px; right: -5px; background: #ff8800; color: #fff; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.18); font-size: 1.1rem; border: 2px solid #fff; transition: background 0.2s; z-index: 2;">
+            <i class="fas fa-pencil-alt"></i>
+          </a>
+        </div>
         <span id="profileName">Abdelrahman shaban</span>
         <div class="balance" onclick="copyLink()">Copy Link</div>
       </div>
@@ -133,38 +137,9 @@
         
         <li><a href="MyScooter.html">My Scooter</a></li>
         <li class="active"><a href="history.html">History</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle">Pricing</a>
-          <ul class="dropdown-menu">
-            <li style="list-style: decimal">
-              <a href="#price-plan1"> *2EGP/MIN+3EGP For Unlock</a>
-            </li>
-            <li style="list-style: decimal">
-              <a href="#price-plan2"
-                >*Minimum amount to deposit is
-                <span style="color: red">30EGP</span> & MAX
-                <span style="color: green">1000EGP</span> PER Ride</a
-              >
-            </li>
-          </ul>
-        </li>
+      <li><a href="pricing.html">Pricing</a></li>
         <li><a href="checkout.html">Wallet</a></li>
-        <!-- <li class="dropdown">
-          <a href="#" class="dropdown-toggle">Help Center</a>
-          <ul class="dropdown-menu">
-            <li style="list-style: decimal">
-              <a href=" tel:+201226999886">
-                Call us: <span style="color: darkorange">+201226999886</span></a
-              >
-            </li>
-            <li style="list-style: decimal">
-              <a href="mailto:linerscoot@gmail.com"
-                >Email us:
-                <span style="color: darkorange">linerscoot@gmail.com</span></a
-              >
-            </li>
-          </ul>
-        </li> -->
+    
         <li><a href="instructions.html">Instructions</a></li>
         <li><a href="terms and conditions.html">Terms and Conditions</a></li>
         <li><a href="refund.html">Refund</a></li>
@@ -237,8 +212,9 @@
     <div id="newScooterDetails" class="scooter-details" style="display: none">
       <span
         id="closeScooterDetails"
-        style="cursor: pointer; position: absolute; top: 10px; left: 10px"
-        >✖</span
+        style="cursor: pointer; position: absolute; top: 10px; left: 10px; font-size: 20px; transition: transform 0.3s ease;"
+        class="close-icon"
+        ><i class="fas fa-chevron-down"></i></span
       >
       <div class="scooter-id" id="scooterIdContainer">
         SCOOT ID: <span id="newScooterId2"></span>
@@ -491,6 +467,82 @@
         if (message.toLowerCase().includes('wallet')) return 'For wallet issues, please provide your email and a screenshot if possible.';
         return 'Thank you for your message. Our support team will get back to you soon.';
       }
+    </script>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+      <div class="modal-content" style="max-width: 500px; padding: 20px;">
+        <h2>Edit Profile</h2>
+        <form id="editProfileForm">
+          <div class="form-group">
+            <label>Profile Photo</label>
+            <input type="file" id="profilePhotoInput" accept="image/*">
+            <img id="currentProfilePhoto" src="imgs/user.png" alt="Current Profile" style="width: 100px; height: 100px; border-radius: 50%; margin: 10px 0;">
+          </div>
+          
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="usernameInput" placeholder="Enter new username">
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="emailInput" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="phoneInput" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="ageInput" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Current Password</label>
+            <input type="password" id="currentPasswordInput" placeholder="Enter current password">
+          </div>
+
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="newPasswordInput" placeholder="Enter new password">
+          </div>
+
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" id="confirmPasswordInput" placeholder="Confirm new password">
+          </div>
+
+          <div class="button-group" style="margin-top: 20px;">
+            <button type="submit" class="btn btn-warning" style="background-color: rgb(255 149 7);">Save Changes</button>
+            <button type="button" class="btn btn-secondary" onclick="closeEditProfileModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+    // Only attach handlers if the elements exist (for sidebar)
+    var changePhotoText = document.getElementById('changePhotoText');
+    var profilePhotoInput = document.getElementById('profilePhotoInput');
+    var profilePic = document.getElementById('profilePic');
+    if (changePhotoText && profilePhotoInput && profilePic) {
+      changePhotoText.onclick = function() {
+        profilePhotoInput.click();
+      };
+      profilePhotoInput.onchange = function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            profilePic.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    }
     </script>
   </body>
 </html>
