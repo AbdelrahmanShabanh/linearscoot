@@ -1,158 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Terms and Conditions</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms & Conditions - Liner Scoot</title>
+  <link rel="stylesheet" href="scoot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     body {
+      background: #fff;
       font-family: 'Poppins', sans-serif;
-      background-color: #f9f9f9;
-      padding-bottom: 70px;
+      margin: 0;
+      padding: 0;
     }
-    .logo{
-        top: 20px;
-        right: 20px;
-        position: absolute;
-        border-radius: 10px;
-    }
-
-    /* Navbar Styling */
-    .navbar-inverse {
-      border-radius: 0;
-      margin-bottom: 20px;
-    }
-    .navbar-inverse .navbar-nav > li > a {
-      color: white;
-    }
-    .navbar-inverse .navbar-nav > li.active > a {
-      background-color: #ff6f00;
-    }
-    p {
-    margin: 0 0 10px;
-    font-size: 16px;
-    }
-
-    /* Terms and Conditions Section */
-    .modals {
+    .navbar {
       width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(90deg, #ff8800 60%, #ffda08 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0.7rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-
-    .modals h2 {
-      color: #ff6f00;
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      font-weight: 700;
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+      transition: max-height 0.3s;
     }
-
-    .modals-content {
-      padding: 20px;
-      font-size: 1.1rem;
-      line-height: 1.6;
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .navbar ul li a:hover {
       color: #333;
     }
-
-    .modals-content ul {
-      list-style-type: none;
-      padding-left: 0;
+    .navbar .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      z-index: 200;
+      margin-left: 1rem;
     }
-
-    .modals-content ul li {
-      margin-bottom: 10px;
-      padding-left: 20px;
-      position: relative;
-      font-size: 18px;
+    .navbar .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      margin: 4px 0;
+      background: #fff;
+      border-radius: 2px;
+      transition: 0.3s;
     }
-
-    .modals-content ul li:before {
-      content: '✔';
-      color: #ff6f00;
-      font-weight: bold;
-      position: absolute;
-      left: 0;
-    }
-
-    /* Responsive Styling */
-    @media (max-width: 768px) {
-      .modals h2 {
-        font-size: 2rem;
+    @media (max-width: 900px) {
+      .navbar {
+        padding: 0.7rem 0.7rem;
       }
-
-      .modals-content {
+    }
+    @media (max-width: 700px) {
+      .navbar ul {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        background: linear-gradient(90deg, #ff8800 60%, #ffda08 100%);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      }
+      .navbar ul.open {
+        max-height: 400px;
+        padding-bottom: 0.7rem;
+        transition: max-height 0.4s;
+      }
+      .navbar ul li {
+        width: 100%;
+        padding: 0.7rem 1.5rem;
+      }
+      .navbar .hamburger {
+        display: flex;
+      }
+    }
+    .terms-container {
+      max-width: 800px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .terms-card {
+      background: #f8f9fa;
+      border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 2.5rem 2rem 2rem 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .terms-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ff8800;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    .terms-section-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ff8800;
+      margin-top: 1.5rem;
+      margin-bottom: 0.7rem;
+    }
+    .terms-list {
+      margin: 0 0 1.5rem 0;
+      padding-left: 1.2rem;
+    }
+    .terms-list li {
+      margin-bottom: 0.7rem;
+      font-size: 1.05rem;
+      color: #333;
+      line-height: 1.7;
+    }
+    .terms-text {
+      color: #444;
+      font-size: 1.08rem;
+      margin-bottom: 1.2rem;
+      line-height: 1.7;
+    }
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 0.7rem 0.7rem;
+      }
+      .terms-container {
+        padding: 0 0.2rem;
+         overflow-y: auto;
+        padding-bottom: 2.5rem;
+      }
+      .terms-card {
+        padding: 1.2rem 0.7rem 1rem 0.7rem;
+      }
+      .terms-title {
+        font-size: 1.2rem;
+      }
+      .terms-section-title {
         font-size: 1rem;
-      }
-
-      .navbar-collapse {
-        text-align: center;
-      }
-
-      .navbar-header {
-        float: none;
-      }
-
-      .navbar-inverse .navbar-toggle {
-        top: 20px;
-        left: 20px;
-        /* width: 50px; */
-        height: 50px;
-        display: block;
-        float: none;
       }
     }
   </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <!-- <a class="navbar-brand" href="#"><img src="imgs/logosalem.jpg" class="logo" alt="" width="70" height="70"></a> -->
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="hamburger" id="hamburgerMenu" aria-label="Open menu" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="login.html">Login</a></li>
-        
-        
-        <li class="active"><a href="terms and conditions.html">Terms and Conditions</a></li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- Terms and Conditions Section -->
-<div id="TermsandConditions" class="modals">
-  <div class="modals-content">
-    <h2>Terms and Conditions</h2>
-    <p> You must agree to the following terms before proceeding:</p>
-    <ul>
-      <li>The person must be above <span style="color: red;">17</span>.</li>
-      <li>Only <span style="color: red;">one</span> person is allowed on the scooter.</li>
-      <li>Do not approach the <span style="color: rgb(255, 166, 0);">boundaries</span> selected on the map.</li>
-      <li>Do not approach the <span style="color: red;">red area</span>.</li>
-      <li>Park the scooter in the <span style="color: green;">parking area</span>.</li>
-      <li>Remember to <span style="color: rgb(255, 187, 0);">lock</span> the scooter.</li>
-      <li>Pricing: Minimum amount to deposit is <span style="color: red;">30EGP</span> & MAX <span style="color: green;">1000EGP</span> PER Ride</li>
+    <ul id="navbarLinks">
+      <li><a href="profile.html">My profile</a></li>
+      <li><a href="MyScooter.html">My Scooter</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="checkout.html">Wallet</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
     </ul>
-  </div>
-</div>
+  </nav>
 
-<footer class="container-fluid text-center">
-  <p>&copy; 2024 Linear Scoot. All rights reserved.</p>
-</footer>
+  <div class="terms-container">
+    <div class="terms-card">
+      <div class="terms-title"><i class="fa-solid fa-file-contract"></i> Terms & Conditions</div>
+      <div class="terms-section-title">General Rules</div>
+      <ul class="terms-list">
+        <li>The user must be at least <span style="color: red; font-weight: bold">17</span> years old.</li>
+        <li>Only <span style="color: red; font-weight: bold">one</span> person is allowed per scooter at any time.</li>
+        <li>Do not approach the <span style="color: orange; font-weight: bold">boundaries</span> shown on the map.</li>
+        <li>Do not enter the <span style="color: red; font-weight: bold">red area</span> for your safety.</li>
+        <li>Always park the scooter in the <span style="color: green; font-weight: bold">designated parking area</span>.</li>
+        <li>Remember to <span style="color: orange; font-weight: bold">lock</span> the scooter after use.</li>
+      </ul>
+      <div class="terms-section-title">Payments & Pricing</div>
+      <ul class="terms-list">
+        <li>Unlock Fee: <span style="color: #ff8800; font-weight: bold">3 EGP</span></li>
+        <li>Per Minute: <span style="color: #ff8800; font-weight: bold">2 EGP</span></li>
+        <li>Minimum Deposit: <span style="color: #ff8800; font-weight: bold">30 EGP</span></li>
+        <li>Maximum Per Ride: <span style="color: #ff8800; font-weight: bold">1000 EGP</span></li>
+        <li>Special Offers: Get bonus EGP when you charge 75, 200, 500, or 1000 EGP.</li>
+      </ul>
+      <div class="terms-section-title">User Responsibilities</div>
+      <ul class="terms-list">
+        <li>Follow all local traffic laws and ride safely.</li>
+        <li>Report any damage or malfunction immediately via the app.</li>
+        <li>Do not lend your account or scooter to others.</li>
+        <li>Respect pedestrians and other road users at all times.</li>
+      </ul>
+      <div class="terms-section-title">Privacy & Data</div>
+      <div class="terms-text">
+        We value your privacy. Your personal data is securely stored and will never be shared with third parties except as required by law or for service provision. For more details, see our Privacy Policy.
+      </div>
+      <div class="terms-section-title">Contact & Support</div>
+      <div class="terms-text">
+        For any questions or support, contact us at <a href="mailto:linerscoot@gmail.com" style="color:#ff8800; font-weight:600;">linerscoot@gmail.com</a> or call <a href="tel:+201226999886" style="color:#ff8800; font-weight:600;">+201226999886</a>.
+      </div>
+    </div>
+  </div>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navbarLinks = document.getElementById('navbarLinks');
+    hamburger.addEventListener('click', function() {
+      navbarLinks.classList.toggle('open');
+    });
+    hamburger.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        navbarLinks.classList.toggle('open');
+      }
+    });
+    // Close menu when clicking a link (mobile UX)
+    Array.from(navbarLinks.querySelectorAll('a')).forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 700) {
+          navbarLinks.classList.remove('open');
+        }
+      });
+    });
+  </script>
 </body>
 </html>

@@ -240,6 +240,12 @@
       .payment-section {
         padding: 18px 6px 10px 6px;
       }
+      .promo-offers {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 18px;
+      }
     }
     .wallet-card-visa {
       width: 100%;
@@ -316,6 +322,28 @@
       border-radius: 50%;
       padding: 2px 2px;
     }
+    .promo-offers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .promo-btn {
+      background: #fffbe7;
+      color: #ff8800;
+      border: 2px solid #ffda08;
+      border-radius: 10px;
+      padding: 8px 17px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+    }
+    .promo-btn:hover, .promo-btn.active {
+      background: #ffda08;
+      color: #fff;
+      border: 2px solid #ff8800;
+    }
   </style>
 </head>
 <body>
@@ -354,6 +382,13 @@
           <input type="text" class="form-control" id="promoCode" placeholder="Enter promo code">
           <i class="fas fa-tag"></i>
         </div>
+        <div class="promo-offers" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;">
+          <button type="button" class="promo-btn" data-pay="75" data-bonus="90">75 → 90 EGP</button>
+          <button type="button" class="promo-btn" data-pay="200" data-bonus="225">200 → 225 EGP</button>
+          <button type="button" class="promo-btn" data-pay="500" data-bonus="570">500 → 570 EGP</button>
+          <button type="button" class="promo-btn" data-pay="1000" data-bonus="1200">1000 → 1200 EGP</button>
+        </div>
+        <input type="hidden" id="bonusAmount" name="bonusAmount" value="">
         <button type="submit" class="btn btn-primary">Proceed to Payment</button>
         <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
       </form>
@@ -474,6 +509,38 @@
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('.loader').style.display = 'none';
       fetchBalanceFromAPI();
+    });
+    // Promo offer button logic
+    const promoBtns = document.querySelectorAll('.promo-btn');
+    const amountInput = document.getElementById('amount');
+    const promoInput = document.getElementById('promoCode');
+    const bonusAmountInput = document.getElementById('bonusAmount');
+
+    promoBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Remove active from all
+        promoBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        amountInput.value = btn.getAttribute('data-pay');
+        promoInput.value = `${btn.getAttribute('data-pay')} get ${btn.getAttribute('data-bonus')} promo applied!`;
+        bonusAmountInput.value = btn.getAttribute('data-bonus');
+      });
+    });
+    // On form submit, use bonusAmount if set
+    const paymentForm = document.getElementById('paymentForm');
+    paymentForm.addEventListener('submit', function(e) {
+      const bonus = bonusAmountInput.value;
+      if (bonus) {
+        // Replace amount with bonus for backend, but keep original for user
+        const realAmount = amountInput.value;
+        amountInput.setAttribute('data-original', realAmount);
+        amountInput.value = bonus;
+        setTimeout(() => {
+          amountInput.value = realAmount;
+          bonusAmountInput.value = '';
+          promoBtns.forEach(b => b.classList.remove('active'));
+        }, 1000); // Reset after submit
+      }
     });
   </script>
 </body>

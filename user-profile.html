@@ -110,20 +110,38 @@
     <form id="editProfileForm">
       <div class="profile-pic-container">
         <img src="imgs/user.png" alt="Profile Picture" id="profilePicPreview" class="profile-pic">
-        <label for="profilePicInput" class="upload-label"><i class="fas fa-camera"></i> Change Photo</label>
+        <label for="profilePicInput" class="upload-label"><i class="fas fa-camera"></i> Change profile photo</label>
         <input type="file" id="profilePicInput" accept="image/*" style="display:none">
       </div>
+      <div id="userDataError" style="color: red; text-align: center; display: none;">User data not found. Please log in again.</div>
       <div class="mb-3">
         <label for="userName" class="form-label">Name</label>
         <input type="text" class="form-control" id="userName">
       </div>
       <div class="mb-3">
-        <label for="userPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="userPassword">
+        <label for="userEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="userEmail" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="userPhone" class="form-label">Phone Number</label>
+        <input type="tel" class="form-control" id="userPhone" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="userAge" class="form-label">Age</label>
+        <input type="number" class="form-control" id="userAge" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="oldPassword" class="form-label">Old Password</label>
+        <input type="password" class="form-control" id="oldPassword">
+      </div>
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">New Password</label>
+        <input type="password" class="form-control" id="newPassword">
       </div>
       <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
   <script>
     // Load current user data from localStorage (if available)
     document.addEventListener('DOMContentLoaded', function() {
@@ -143,10 +161,15 @@
         return decryptData(encryptedData, secretKey);
       }
       const storedData = getDataWithExpiration("userData", secretKey);
-      if (storedData) {
-        const userData = storedData.data && storedData.data.user ? storedData.data.user : {};
+      if (storedData && storedData.data && storedData.data.user) {
+        const userData = storedData.data.user;
         document.getElementById('userName').value = userData.fullname || '';
-        document.getElementById('profilePicPreview').src = userData.photo || 'imgs/user.png';
+        document.getElementById('profilePicPreview').src = userData.profilePhoto || 'imgs/user.png';
+        document.getElementById('userEmail').value = userData.email || '';
+        document.getElementById('userPhone').value = userData.phone || '';
+        document.getElementById('userAge').value = userData.age || '';
+      } else {
+        document.getElementById('userDataError').style.display = 'block';
       }
     });
     // Handle profile photo change
@@ -167,7 +190,8 @@
     document.getElementById('editProfileForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const name = document.getElementById('userName').value;
-      const password = document.getElementById('userPassword').value;
+      const oldPassword = document.getElementById('oldPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
       const photo = document.getElementById('profilePicPreview').src;
       // Save to localStorage (simulate API call)
       const secretKey = "jnvmnjofmcivneirp";
@@ -179,19 +203,20 @@
         storedData = JSON.parse(storedData);
         const decryptedData = JSON.parse(CryptoJS.AES.decrypt(storedData.encryptedData, secretKey).toString(CryptoJS.enc.Utf8));
         const userData = decryptedData.data && decryptedData.data.user ? decryptedData.data.user : {};
-        storedData.encryptedData = encryptData({
-          user: {
-            ...userData,
-            fullname: name,
-            password: password,
-            photo: photo
-          }
-        }, secretKey);
+        // Only update name and password if provided
+        const updatedUser = {
+          ...userData,
+          fullname: name,
+          profilePhoto: photo
+        };
+        if (oldPassword && newPassword && userData.password === oldPassword) {
+          updatedUser.password = newPassword;
+        }
+        storedData.encryptedData = encryptData({ user: updatedUser }, secretKey);
         localStorage.setItem("userData", JSON.stringify(storedData));
         window.location.href = 'profile.html';
       }
     });
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 </body>
 </html> 

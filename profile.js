@@ -7,46 +7,83 @@ let lastClickedMarker = null;
 let lastPolyline = null;
 // Function to decrypt data
 function decryptData(encryptedData, secretKey) {
-  const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
-  return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  try {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  } catch (error) {
+    console.error('Error decrypting data:', error);
+    return null;
+  }
 }
 
 // Function to set data in localStorage with expiration
 function getDataWithExpiration(key, secretKey) {
-  const storedData = localStorage.getItem(key);
-  if (!storedData) return null; // No data found
+  try {
+    const storedData = localStorage.getItem(key);
+    if (!storedData) return null;
 
-  const { encryptedData, expiration } = JSON.parse(storedData);
-  if (Date.now() > expiration) {
-    localStorage.removeItem(key); // Remove expired data
-    return null; // Data is expired
+    const { encryptedData, expiration } = JSON.parse(storedData);
+    if (Date.now() > expiration) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return decryptData(encryptedData, secretKey);
+  } catch (error) {
+    console.error('Error getting data:', error);
+    return null;
   }
-  return decryptData(encryptedData, secretKey); // Decrypt and return valid data
 }
-const secretKey = "jnvmnjofmcivneirp"; // Use the same secret key for decryption
-const storedData = getDataWithExpiration("userData", secretKey);
 
-if (storedData) {
-  console.log("Valid User Data:", storedData);
-  document.getElementById("profileName").innerText =
-    storedData.data.user.fullname;
-  // document.getElementById(
-  //   "ProfileBalance"
-  // ).innerText = `${storedData.data.user.wallet} EGP`;
-  // document.getElementById(
-  //   "ProfileBalance"
-  // ).innerText = `50 EGP`;
-  // document.getElementById(
-  //   "currentBalance"
-  // ).innerText = `${storedData.data.user.wallet} EGP`;
-  // document.getElementById(
-  //   "currentBalance"
-  // ).innerText = `50 EGP`;
-} else {
-  window.location.href = "/login.html";
+// Initialize profile data
+function initializeProfile() {
+  const secretKey = "jnvmnjofmcivneirp";
+  const storedData = getDataWithExpiration("userData", secretKey);
+
+  if (storedData && storedData.data && storedData.data.user) {
+    const userData = storedData.data.user;
+    
+    // Update profile name
+    const profileNameElement = document.getElementById("profileName");
+    if (profileNameElement) {
+      profileNameElement.innerText = userData.fullname || 'User';
+    }
+
+    // Update profile picture if exists
+    const profilePicElement = document.getElementById("profilePic");
+    if (profilePicElement && userData.profilePhoto) {
+      profilePicElement.src = userData.profilePhoto;
+    }
+
+    // Initialize balance with user data
+    initializeBalance(userData);
+  } else {
+    console.error('Invalid or missing user data');
+    window.location.href = "/login.html";
+  }
 }
-async function fetchBalanceFromAPI() {
-  console.log(storedData.data.user.email);
+
+// Initialize balance
+async function initializeBalance(userData) {
+  try {
+    const balance = await fetchBalanceFromAPI(userData);
+    const balanceElement = document.getElementById("currentBalance");
+    if (balanceElement) {
+      balanceElement.innerHTML = `${balance} <sub>EGP</sub>`;
+    }
+  } catch (error) {
+    console.error('Error fetching balance:', error);
+    const balanceElement = document.getElementById("currentBalance");
+    if (balanceElement) {
+      balanceElement.innerHTML = 'Error <sub>EGP</sub>';
+    }
+  }
+}
+
+async function fetchBalanceFromAPI(userData) {
+  if (!userData || !userData.email) {
+    throw new Error('User data is missing');
+  }
+
   const response = await fetch(
     "https://scooter-mocha.vercel.app/api/checkout/userbalance",
     {
@@ -54,17 +91,21 @@ async function fetchBalanceFromAPI() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: storedData.data.user.email }),
+      body: JSON.stringify({ email: userData.email }),
     }
-  ); // replace with your API URL
+  );
+
   if (!response.ok) {
-    console.log(response.error);
     throw new Error("Network response was not ok");
   }
-  const data = await response.json();
 
-  return data.wallet; // assuming the API returns an object with a 'balance' field
+  const data = await response.json();
+  return data.wallet;
 }
+
+// Call initialize profile when document is ready
+document.addEventListener('DOMContentLoaded', initializeProfile);
+
 document
   .getElementById("currentBalance")
   .addEventListener("click", function () {
@@ -80,21 +121,7 @@ document
         this.innerHTML = "Error fetching balance <sub>EGP</sub>";
       });
   });
-// document
-//   .getElementById("ProfileBalance")
-//   .addEventListener("click", function () {
-//     // Assuming you have a function to fetch the balance from your API
-//     fetchBalanceFromAPI()
-//       .then((balance) => {
-//         // Update the span text with the fetched balance
-//         this.innerHTML = `${balance} <sub>EGP</sub>`;
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching balance:", error);
-//         // Optionally, you could handle the error by displaying a message
-//         this.innerHTML = "Error fetching balance <sub>EGP</sub>";
-//       });
-//   });
+
 function initMap() {
   const allowedAreaCoords = [
     // { lat: 29.43416116753383, lng: 32.398229305394274 }, //clockwise
@@ -1067,57 +1094,27 @@ function initMap() {
 }
 window.initMap = initMap;
 
-// Load the Google Maps API asynchronously and then call initMap
+// Load the Google Maps API asynchronously
 function loadGoogleMapsScript() {
-  const script = document.createElement("script");
-  script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyD26fVBtlyRntHRuVcbP_QBjg8rCCuAqj0&callback=initMap`;
-  script.async = true;
-  script.defer = true;
-  document.head.appendChild(script);
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyD26fVBtlyRntHRuVcbP_QBjg8rCCuAqj0&callback=initMap&loading=async`;
+    script.async = true;
+    script.defer = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
 }
 
-document.addEventListener("DOMContentLoaded", loadGoogleMapsScript);
-
-//map style
-// function initMap() {
-//   // Create a new StyledMapType object, passing it an array of styles,
-//   // and the name to be displayed on the map type control.
-//   const styledMapType = new google.maps.StyledMapType(
-//     [
-//       // {
-//       //   featureType: "all",
-//       //   elementType: "labels.text.fill",
-//       //   stylers: [{ color: "#523735" }],
-//       // },
-//       {
-//         featureType: "all",
-//         elementType: "labels.text.stroke",
-//         stylers: [{ color: "#f5f1e6" }],
-//       },
-//       {
-//         featureType: "road.local",
-//         elementType: "geometry",
-//         stylers: [{ color: "#9e9e9e" }], // Gray color for roads
-//       },
-//       {
-//         featureType: "road.local",
-//         elementType: "geometry.stroke",
-//         stylers: [{ color: "#7b7b7b" }], // Darker gray stroke for roads
-//       },
-//       // {
-//       //   featureType: "landscape.man_made",
-//       //   elementType: "geometry",
-//       //   stylers: [{ color: "#b86b4d" }], // Brown color for buildings
-//       // },
-//       {
-//         featureType: "landscape.man_made",
-//         elementType: "geometry.stroke",
-//         stylers: [{ color: "#8c4a2f" }], // Darker brown stroke for buildings
-//       },
-//     ],
-//     { name: "Styled Map" }
-//   );
-// }
+// Initialize map after API is loaded
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    await loadGoogleMapsScript();
+  } catch (error) {
+    console.error('Error loading Google Maps:', error);
+  }
+});
 
 document.getElementById("scanQRButton").addEventListener("click", function () {
   // Show the terms and conditions modal
@@ -1799,4 +1796,117 @@ window.addEventListener('DOMContentLoaded', function () {
     .catch((error) => {
       document.getElementById('currentBalance').innerHTML = 'Error <sub>EGP</sub>';
     });
+});
+
+// ... existing code ...
+
+// Edit Profile Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    var editProfileBtn = document.getElementById('editProfileBtn');
+    var editProfileModal = document.getElementById('editProfileModal');
+    var editProfileForm = document.getElementById('editProfileForm');
+    var profilePhotoInput = document.getElementById('profilePhotoInput');
+    var currentProfilePhoto = document.getElementById('currentProfilePhoto');
+
+    // Only proceed if all elements exist (for edit modal)
+    if (editProfileBtn && editProfileModal && editProfileForm && profilePhotoInput && currentProfilePhoto) {
+        // Load user data from localStorage
+        const userData = JSON.parse(localStorage.getItem('userData')) || {};
+        // Populate form with existing data
+        document.getElementById('usernameInput').value = userData.username || '';
+        document.getElementById('emailInput').value = userData.email || '';
+        document.getElementById('phoneInput').value = userData.phone || '';
+        document.getElementById('ageInput').value = userData.age || '';
+        if (userData.profilePhoto) {
+            currentProfilePhoto.src = userData.profilePhoto;
+        }
+        // Show edit profile modal
+        editProfileBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            editProfileModal.style.display = 'block';
+        });
+        // Handle profile photo preview
+        profilePhotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentProfilePhoto.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        // Handle form submission
+        editProfileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            const newUsername = document.getElementById('usernameInput').value;
+            const currentPassword = document.getElementById('currentPasswordInput').value;
+            const newPassword = document.getElementById('newPasswordInput').value;
+            const confirmPassword = document.getElementById('confirmPasswordInput').value;
+            const profilePhoto = profilePhotoInput.files[0];
+
+            // Validate passwords if they're being changed
+            if (newPassword || confirmPassword) {
+                if (newPassword !== confirmPassword) {
+                    alert('New passwords do not match!');
+                    return;
+                }
+                if (!currentPassword) {
+                    alert('Please enter your current password to make changes');
+                    return;
+                }
+            }
+
+            // Add data to FormData
+            if (newUsername) formData.append('username', newUsername);
+            if (currentPassword) formData.append('currentPassword', currentPassword);
+            if (newPassword) formData.append('newPassword', newPassword);
+            if (profilePhoto) formData.append('profilePhoto', profilePhoto);
+            formData.append('email', userData.email); // Include email for identification
+
+            try {
+                const response = await fetch('https://scooter-mocha.vercel.app/api/user/update-profile', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const updatedData = await response.json();
+                    
+                    // Update localStorage with new data
+                    const updatedUserData = {
+                        ...userData,
+                        username: newUsername || userData.username,
+                        profilePhoto: updatedData.profilePhoto || userData.profilePhoto
+                    };
+                    localStorage.setItem('userData', JSON.stringify(updatedUserData));
+
+                    // Show success message and redirect to login
+                    alert('Profile updated successfully! Please login again.');
+                    window.location.href = 'login.html';
+                } else {
+                    const error = await response.json();
+                    alert(error.message || 'Failed to update profile');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert('An error occurred while updating your profile');
+            }
+        });
+    }
+});
+
+// Close edit profile modal
+function closeEditProfileModal() {
+    document.getElementById('editProfileModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(e) {
+    const modal = document.getElementById('editProfileModal');
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
 });

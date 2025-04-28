@@ -957,19 +957,26 @@ display: none;
 
 .profile-header {
     text-align: center;
-    /* margin-bottom: 20px; */
+    position: relative;
+    margin-bottom: 20px;
+    padding: 10px;
 }
 
 #profilePic {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     margin-bottom: 10px;
+    position: relative;
+    object-fit: cover;
+    border: 4px solid #ffda08;
+    background: #fff;
 }
 
 #profileName {
     display: block;
     font-weight: bold;
+    margin-top: 5px;
     margin-bottom: 5px;
     font-size: 15px;
 }
@@ -1420,15 +1427,25 @@ display: none;
 
 .upload-button {
     position: absolute;
-   top: 85px;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #FFA500;
-    border: none;
+    background-color: rgba(255, 111, 0, 0.8);
     color: white;
-    padding: 5px 10px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid white;
+}
+
+.upload-button:hover {
+    background-color: rgba(255, 111, 0, 1);
+    transform: translateX(-50%) scale(1.1);
 }
 
 .scooter-balance {
@@ -1962,4 +1979,60 @@ height: 70px;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Pencil icon for profile edit */
+#editProfileIcon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #ff8800;
+  color: #fff;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  font-size: 1.1rem;
+  border: 2px solid #fff;
+  transition: background 0.2s;
+  z-index: 2;
+}
+#editProfileIcon:hover {
+  background: #ff6f00;
+}
+
+.profile-header {
+  text-align: center;
+  position: relative;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.profile-header img#profilePic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffda08;
+  background: #fff;
+  margin-bottom: 0;
+}
+
+#changePhotoText {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .profile-header img#profilePic {
+    width: 80px;
+    height: 80px;
+  }
+  #editProfileIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+  }
 }

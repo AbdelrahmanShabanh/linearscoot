@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing - Liner Scoot</title>
+  <link rel="stylesheet" href="scoot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body {
+      background: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      width: 100%;
+      background: linear-gradient(90deg, #ff8800 60%, #ffda08 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+      transition: max-height 0.3s;
+    }
+    .navbar ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+    .navbar ul li a:hover {
+      color: #333;
+    }
+    .navbar .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      z-index: 200;
+    }
+    .navbar .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      margin: 4px 0;
+      background: #fff;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    @media (max-width: 900px) {
+      .navbar {
+        padding: 0.7rem 0.7rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .navbar ul {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100vw;
+        background: linear-gradient(90deg, #ff8800 60%, #ffda08 100%);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      }
+      .navbar ul.open {
+        max-height: 400px;
+        padding-bottom: 0.7rem;
+        transition: max-height 0.4s;
+      }
+      .navbar ul li {
+        width: 100%;
+        padding: 0.7rem 1.5rem;
+      }
+      .navbar .hamburger {
+        display: flex;
+      }
+    }
+    .pricing-container {
+      max-width: 900px;
+      margin: 2.5rem auto;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+    .section {
+      background: #f8f9fa;
+      border-radius: 18px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ff8800;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+    .pricing-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .pricing-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 1px 6px rgba(255,136,0,0.07);
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #333;
+    }
+    .pricing-item .icon {
+      color: #ff8800;
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+    .offers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.2rem;
+    }
+    .offer-card {
+      background: #fffbe7;
+      border-radius: 14px;
+      box-shadow: 0 1px 8px rgba(255,136,0,0.09);
+      padding: 1.5rem 1rem 1.2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s;
+      border: 2px solid #ffda08;
+    }
+    .offer-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 4px 16px rgba(255,136,0,0.13);
+    }
+    .offer-amount {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #ff8800;
+      margin-bottom: 0.5rem;
+    }
+    .offer-bonus {
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 0.2rem;
+    }
+    .offer-egp {
+      font-size: 1.1rem;
+      color: #ffda08;
+      font-weight: 600;
+    }
+    @media (max-width: 600px) {
+      .pricing-container {
+        padding: 0 0.2rem;
+        max-height: 90vh;
+        overflow-y: auto;
+        gap: 1.2rem;
+      }
+      .section {
+        padding: 1.2rem 0.7rem 1rem 0.7rem;
+      }
+      .offer-card {
+        padding: 1.1rem 0.5rem 1rem 0.5rem;
+      }
+      .section-title {
+        font-size: 1.1rem;
+      }
+      .offer-amount {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+   
+    <div class="hamburger" id="hamburgerMenu" aria-label="Open menu" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul id="navbarLinks">
+      <li><a href="profile.html">My profile</a></li>
+      <li><a href="MyScooter.html">My Scooter</a></li>
+      <li><a href="history.html">History</a></li>
+      <li><a href="checkout.html">Wallet</a></li>
+      <li><a href="instructions.html">Instructions</a></li>
+      <li><a href="pricing.html" style="color:#ffda08;font-weight:700;">Pricing</a></li>
+    </ul>
+  </nav>
+
+  <div class="pricing-container">
+    <!-- Pricing Section -->
+    <section class="section">
+      <div class="section-title"><i class="fa-solid fa-tags icon"></i> Standard Pricing</div>
+      <div class="pricing-list">
+        <div class="pricing-item"><span><i class="fa-solid fa-bolt icon"></i>Unlock Fee</span> <span>3 <span class="offer-egp">EGP</span></span></div>
+        <div class="pricing-item"><span><i class="fa-solid fa-stopwatch icon"></i>Per Minute</span> <span>2 <span class="offer-egp">EGP</span></span></div>
+        <div class="pricing-item"><span><i class="fa-solid fa-wallet icon"></i>Min Deposit</span> <span>30 <span class="offer-egp">EGP</span></span></div>
+        <div class="pricing-item"><span><i class="fa-solid fa-money-bill-trend-up icon"></i>Max Per Ride </span> <span> 1000 <span class="offer-egp">EGP</span></span></div>
+      </div>
+    </section>
+
+    <!-- Special Offers Section -->
+    <section class="section">
+      <div class="section-title"><i class="fa-solid fa-gift icon"></i> Special Offers</div>
+      <div class="offers-grid">
+        <div class="offer-card">
+          <div class="offer-amount">75 <span class="offer-egp">EGP</span></div>
+          <div class="offer-bonus">Get <span style="color:#ff8800;font-weight:700;">90</span> <span class="offer-egp">EGP</span></div>
+        </div>
+        <div class="offer-card">
+          <div class="offer-amount">200 <span class="offer-egp">EGP</span></div>
+          <div class="offer-bonus">Get <span style="color:#ff8800;font-weight:700;">225</span> <span class="offer-egp">EGP</span></div>
+        </div>
+        <div class="offer-card">
+          <div class="offer-amount">500 <span class="offer-egp">EGP</span></div>
+          <div class="offer-bonus">Get <span style="color:#ff8800;font-weight:700;">570</span> <span class="offer-egp">EGP</span></div>
+        </div>
+        <div class="offer-card">
+          <div class="offer-amount">1000 <span class="offer-egp">EGP</span></div>
+          <div class="offer-bonus">Get <span style="color:#ff8800;font-weight:700;">1200</span> <span class="offer-egp">EGP</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburgerMenu');
+    const navbarLinks = document.getElementById('navbarLinks');
+    hamburger.addEventListener('click', function() {
+      navbarLinks.classList.toggle('open');
+    });
+    hamburger.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        navbarLinks.classList.toggle('open');
+      }
+    });
+    // Close menu when clicking a link (mobile UX)
+    Array.from(navbarLinks.querySelectorAll('a')).forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 700) {
+          navbarLinks.classList.remove('open');
+        }
+      });
+    });
+  </script>
+</body>
+</html> 
